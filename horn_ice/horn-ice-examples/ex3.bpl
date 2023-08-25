@@ -1,15 +1,25 @@
 /* Horn ICE output
 function {:existential true} {:inline} R1(x: int, z: int, x': int, z': int) : bool
 {
-  (z <= 0 && z - z' <= 0 && z' <= 0 && z <= -1) || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && x <= 0 && x <= -1) || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && x <= 0 && -1 < x && -1 < x' && x' <= 0) || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && 0 < x) || 0 < z
+  (z <= 1 && x + z <= 1 && -1 < z - z' && x - z <= -1) || (z <= 1 && x + z <= 1 && -1 < z - z' && -1 < x - z && x <= -1) 
+  || (z <= 1 && x + z <= 1 && -1 < z - z' && -1 < x - z && -1 < x && x <= 0 && x - x' <= 0 && x' <= 0) 
+  || (z <= 1 && x + z <= 1 && -1 < z - z' && -1 < x - z && -1 < x && 0 < x) || (z <= 1 && 1 < x + z && -1 < z - z') || 1 < z
 }
 
 function {:existential true} {:inline} R2(x: int, z: int, x': int, z': int) : bool
 {
-  (x + z' <= 1 && z - z' <= 0) || (1 < x + z' && z - z' <= 0)
+  z - z' <= 0
 }
-*/
 
+Prover time = 33.80
+Number of prover queries = 4358
+Learner time = 1976.34
+Number of learner queries = 1997
+Total time: 2085.58
+Number of positive examples:20
+Number of negative examples:0
+Number of Horn clauses:2007
+*/
 
 function {:existential true} R1(x: int, z:int, x': int, z': int) : bool;
 function {:existential true} R2(x: int, z: int, x': int, z': int) : bool;
@@ -18,6 +28,7 @@ var x: int;
 var z: int;
 
 procedure T1()
+	requires z == 1;
 	modifies x, z;
 {
 	var old_x: int;
@@ -33,6 +44,10 @@ procedure T1()
 		call Rely1();
 		r := x;
 	}
+	call Rely1();
+	old_z := z;
+	z := 2;
+	assert R2(x, old_z, x, z);
 	call Rely1();
 	assert r == 0;
 }

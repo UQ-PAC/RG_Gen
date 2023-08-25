@@ -8,9 +8,18 @@ function {:existential true} {:inline} R2(x: int, z: int, new_x: int, new_z: int
 {
   z <= -2 || (-2 < z && z - new_z <= 0) || (-2 < z && 0 < z - new_z && 0 < new_z)
 }
+
+Prover time = 10.82
+Number of prover queries = 6567
+Learner time = 123.24
+Number of learner queries = 591
+Total time: 154.82
+Number of positive examples:13
+Number of negative examples:31
+Number of Horn clauses:554
 */
 
-/*Code 
+/* Code 
 procedure T1()
 	modifies x, z;
 {

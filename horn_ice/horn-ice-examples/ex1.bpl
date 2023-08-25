@@ -8,6 +8,15 @@ function {:existential true} {:inline} R2(x: int, x': int) : bool
 {
   (-1 < x - x' && x + x' <= -2) || (-1 < x - x' && -2 < x + x' && x - x' <= 0)
 }
+
+Prover time = 0.33
+Number of prover queries = 142
+Learner time = 0.13
+Number of learner queries = 22
+Total time: 0.72
+Number of positive examples:6
+Number of negative examples:0
+Number of Horn clauses:16
 */
 
 function {:existential true} R1(x : int, x': int) : bool;

@@ -1,15 +1,25 @@
 /* Horn ICE output
 function {:existential true} {:inline} R1(x: int, z: int, x': int, z': int) : bool
 {
-  (z <= 0 && z - z' <= 0 && z' <= 0 && z <= -1) || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && x <= 0 && x <= -1) || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && x <= 0 && -1 < x && -1 < x' && x' <= 0) || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && 0 < x) || 0 < z
+  (z <= 0 && z - z' <= 0 && z' <= 0 && z <= -1) || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && x <= 0 && x <= -1) 
+  || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && x <= 0 && -1 < x && -1 < x' && x' <= 0) 
+  || (z <= 0 && z - z' <= 0 && z' <= 0 && -1 < z && 0 < x) || 0 < z
 }
 
 function {:existential true} {:inline} R2(x: int, z: int, x': int, z': int) : bool
 {
   (x + z' <= 1 && z - z' <= 0) || (1 < x + z' && z - z' <= 0)
 }
-*/
 
+Prover time = 7.97
+Number of prover queries = 1491
+Learner time = 93.75
+Number of learner queries = 672
+Total time: 116.44
+Number of positive examples:16
+Number of negative examples:0
+Number of Horn clauses:674
+*/
 
 function {:existential true} R1(x: int, z:int, x': int, z': int) : bool;
 function {:existential true} R2(x: int, z: int, x': int, z': int) : bool;
