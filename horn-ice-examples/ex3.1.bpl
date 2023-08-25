@@ -61,7 +61,6 @@ var new_z: int;
 procedure pre_condition()
 	requires z == 1;
 { 
-	
 	assert T10(x, r, z);
 	assert T20(x, z);
 }
