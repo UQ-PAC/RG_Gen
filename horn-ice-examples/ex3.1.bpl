@@ -194,7 +194,7 @@ procedure TransitiveR1()
 }
   
 procedure Rely2();
-	modifies z, x;
+	modifies x, z;
 	ensures R2(old(x),old(z),x,z);
 	
 procedure ReflexiveR2()
