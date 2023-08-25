@@ -1,4 +1,3 @@
-// On web interface, times out (even just for R1)
 function {:existential true} R1(x : int, z:int, new_x: int, new_z: int) : bool
 {
     -2 < z - new_z && -1 < z - new_z
