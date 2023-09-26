@@ -1,5 +1,5 @@
 from lark import Transformer
-# from thread import *
+from proof import *
 
 
 grammar = """
@@ -107,115 +107,115 @@ grammar = """
 """
 
 
-# class Transform(Transformer):
-#     """
-#     The transformer contains a set of methods for converting nodes of the same
-#     name in the (compressed) AST to the custom data types defined in thread.py.
-#     """
-#     def __init__(self):
-#         super().__init__()
-#         self.t_id = 0
-#
-#     @staticmethod
-#     def program(args):
-#         return args
-#
-#     @staticmethod
-#     def precondition(args):
-#         return args[0]
-#
-#     @staticmethod
-#     def postcondition(args):
-#         return args[0]
-#
-#     @staticmethod
-#     def globals(args):
-#         return args
-#
-#     def procedure(self, args):
-#         self.t_id += 1
-#         return Procedure(str(args[0]), self.t_id, args[1])
-#
-#     @staticmethod
-#     def block(args):
-#         return args
-#
-#     @staticmethod
-#     def assign(args):
-#         return Assignment(args[0], args[1])
-#
-#     @staticmethod
-#     def branch(args):
-#         return Conditional(args[0], args[1], args[2])
-#
-#     @staticmethod
-#     def assume(args):
-#         return Assumption(args[0])
-#
-#     @staticmethod
-#     def assertion(args):
-#         return Assertion(args[0])
-#
-#     @staticmethod
-#     def impl(args):
-#         return Implies(args[0], args[2])
-#
-#     @staticmethod
-#     def disj(args):
-#         return Or(args[0], args[2])
-#
-#     @staticmethod
-#     def conj(args):
-#         return And(args[0], args[2])
-#
-#     @staticmethod
-#     def neg(args):
-#         return Not(args[1])
-#
-#     @staticmethod
-#     def atom(args):
-#         return args[0]
-#
-#     @staticmethod
-#     def bool(args):
-#         return TRUE() if str(args[0]) == 'true' else FALSE()
-#
-#     @staticmethod
-#     def comp(args):
-#         op = str(args[1])
-#         if op == '<=':
-#             return LE(args[0], args[2])
-#         if op == '<':
-#             return LT(args[0], args[2])
-#         if op == '>=':
-#             return GE(args[0], args[2])
-#         if op == '>':
-#             return GT(args[0], args[2])
-#         if op == '==':
-#             return Equals(args[0], args[2])
-#         if op == '!=':
-#             return NotEquals(args[0], args[2])
-#
-#     @staticmethod
-#     def a_expr(args):
-#         op = str(args[1])
-#         if op == '+':
-#             return Plus(args[0], args[2])
-#         if op == '-':
-#             return Minus(args[0], args[2])
-#
-#     @staticmethod
-#     def term(args):
-#         op = str(args[1])
-#         if op == '*':
-#             return Times(args[0], args[2])
-#         if op == '/':
-#             return Div(args[0], args[2])
-#
-#     @staticmethod
-#     def int_literal(args):
-#         return Int(int(args[0]))
-#
-#     @staticmethod
-#     def variable(args):
-#         return Symbol(str(args[0]), INT)
+class Transform(Transformer):
+    """
+    The transformer contains a set of methods for converting nodes of the same
+    name in the (compressed) AST to the custom data types defined in thread.py.
+    """
+    def __init__(self):
+        super().__init__()
+        self.t_id = 0
+
+    @staticmethod
+    def program(args):
+        return args
+
+    @staticmethod
+    def precondition(args):
+        return args[0]
+
+    @staticmethod
+    def postcondition(args):
+        return args[0]
+
+    @staticmethod
+    def globals(args):
+        return args
+
+    def procedure(self, args):
+        self.t_id += 1
+        return Procedure(str(args[0]), self.t_id, args[1])
+
+    @staticmethod
+    def block(args):
+        return args
+
+    @staticmethod
+    def assign(args):
+        return Assignment([args[0], args[1]])
+
+    @staticmethod
+    def branch(args):
+        return Conditional(args[0], args[1], args[2])
+
+    @staticmethod
+    def assume(args):
+        return Assumption(args[0])
+
+    @staticmethod
+    def assertion(args):
+        return Assertion(args[0])
+
+    @staticmethod
+    def impl(args):
+        return Implies(args[0], args[2])
+
+    @staticmethod
+    def disj(args):
+        return Or(args[0], args[2])
+
+    @staticmethod
+    def conj(args):
+        return And(args[0], args[2])
+
+    @staticmethod
+    def neg(args):
+        return Not(args[1])
+
+    @staticmethod
+    def atom(args):
+        return args[0]
+
+    @staticmethod
+    def bool(args):
+        return TRUE() if str(args[0]) == 'true' else FALSE()
+
+    @staticmethod
+    def comp(args):
+        op = str(args[1])
+        if op == '<=':
+            return LE(args[0], args[2])
+        if op == '<':
+            return LT(args[0], args[2])
+        if op == '>=':
+            return GE(args[0], args[2])
+        if op == '>':
+            return GT(args[0], args[2])
+        if op == '==':
+            return Equals(args[0], args[2])
+        if op == '!=':
+            return NotEquals(args[0], args[2])
+
+    @staticmethod
+    def a_expr(args):
+        op = str(args[1])
+        if op == '+':
+            return Plus(args[0], args[2])
+        if op == '-':
+            return Minus(args[0], args[2])
+
+    @staticmethod
+    def term(args):
+        op = str(args[1])
+        if op == '*':
+            return Times(args[0], args[2])
+        if op == '/':
+            return Div(args[0], args[2])
+
+    @staticmethod
+    def int_literal(args):
+        return Int(int(args[0]))
+
+    @staticmethod
+    def variable(args):
+        return Symbol(str(args[0]), INT)
