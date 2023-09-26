@@ -100,25 +100,25 @@ class Statement:
         return output_nodes
 
 
-    def get_proof_str(self, annotations=True):
+    def get_proof_str(self):
         proof_str = ''
-        if annotations:
-            disjuncts = [n.pred for n in self.nodes]
-            proof_str += '{' + str(Or(disjuncts)) + '}\n'
-        proof_str += str(self)
+        disjuncts = [n.pred for n in self.nodes]
+        proof_str += '{' + str(Or(disjuncts)) + '}'
+        if not isinstance(self, Eof):
+            proof_str += '\n' + str(self)
         if isinstance(self, Conditional):
             proof_str += ' {'
             body = ''
             for n in self.true_block:
                 body += '\n'
-                body += n.get_proof_str(annotations=annotations)
+                body += n.get_proof_str()
             body = body.replace('\n', '\n' + ' ' * INDENT)
             proof_str += body
             proof_str += '\n} else {'
             body = ''
             for n in self.false_block:
                 body += '\n'
-                body += n.get_proof_str(annotations=annotations)
+                body += n.get_proof_str()
             body = body.replace('\n', '\n' + ' ' * INDENT)
             proof_str += body
             proof_str += '\n}' if body else '}'
@@ -135,7 +135,7 @@ class Procedure:
         # This procedure's list of statements.
         self.block = block
         # The special end-of-file 'E' statement, appended for analysis purposes.
-        self.eof = Eof()
+        self.block.append(Eof())
         # The program counter symbol of the thread. E.g. 'pc_3'.
         self.pc_symb = Symbol('pc_' + str(t_id), INT)
         # True iff the thread has reached a fixpoint.
@@ -143,11 +143,14 @@ class Procedure:
         # The environment instructions that may interfere with this thread.
         self.interfering_assignments = []
 
+    def get_post(self):
+        eof_stmt = self.block[-1]
+        return Or([n.pred for n in eof_stmt.nodes])
+
     def regenerate_proof(self, nodes):
         self.fixpoint_reached = True
         for stmt in self.block:
             nodes = stmt.regenerate_proof(nodes)
-        return self.eof.regenerate_proof(nodes)
 
     def __str__(self):
         return "procedure " + self.name + "()"
@@ -158,8 +161,7 @@ class Procedure:
             body += '\n'
             body += n.get_proof_str()
         body = body.replace('\n', '\n' + ' ' * INDENT)
-        proof_str = str(self) + ' {' + body + '\n' + ' ' * INDENT + '{' + \
-            str(Or([n.pred for n in self.eof.nodes])) + '}' + '\n' + '}' + '\n'
+        proof_str = str(self) + ' {' + body + '\n}'
         return proof_str
 
 

@@ -40,10 +40,7 @@ def main():
                 fixpoint_reached = False
 
     # Compute program postcondition.
-    local_posts = []
-    for t in threads:
-        disjuncts = [n.pred for n in t.eof.nodes]
-        local_posts.append(Or(disjuncts))
+    local_posts = [t.get_post() for t in threads]
     program_post = And(local_posts)
 
     # Print results.
@@ -131,7 +128,6 @@ def init_owner_thread(threads: list[Procedure]):
 
     for t in threads:
         recurse_cfg(t, owner_thread_initialiser)
-        t.eof.thread = t  # EOF statements also need to know their threads.
 
 
 def verify_local_vars(threads: list[Procedure], global_vars):
@@ -143,7 +139,7 @@ def verify_local_vars(threads: list[Procedure], global_vars):
             for p in node.pairs:
                 vars_used.add(p[0])
                 vars_used.update(get_free_variables(p[1]))
-        else:
+        elif not isinstance(node, Eof):
             vars_used.update(get_free_variables(node.cond))
 
     locals_by_thread = []
