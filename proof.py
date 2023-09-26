@@ -103,8 +103,8 @@ class Statement:
     def get_proof_str(self, annotations=True):
         proof_str = ''
         if annotations:
-            precondition = [n.pred for n in self.nodes]
-            proof_str += '{' + str(precondition) + '}\n'
+            disjuncts = [n.pred for n in self.nodes]
+            proof_str += '{' + str(Or(disjuncts)) + '}\n'
         proof_str += str(self)
         if isinstance(self, Conditional):
             proof_str += ' {'
@@ -152,38 +152,14 @@ class Procedure:
     def __str__(self):
         return "procedure " + self.name + "()"
 
-    def get_proof_str(self, annotations=True):
+    def get_proof_str(self,):
         body = ''
         for n in self.block:
             body += '\n'
-            body += n.get_proof_str(annotations=annotations)
+            body += n.get_proof_str()
         body = body.replace('\n', '\n' + ' ' * INDENT)
-        # Add program counters. These are always ordered contiguously from top
-        # to bottom in a standard layout, as per main.init_program_counters.
-        lines = body[1:].split('\n')
-        max_pc = 0
-        for line in lines:
-            # It just so happens that this is a sufficient condition for
-            # excluding line numbers.
-            if '}' not in line:
-                max_pc += 1
-        std_length = len(str(max_pc)) + 2
-        lines_with_pcs = []
-        pc = 1
-        for line in lines:
-            pc_segment = '| '
-            if '}' not in line:
-                pc_segment = str(pc) + pc_segment
-                pc += 1
-            pc_segment = ' ' * (std_length - len(pc_segment)) + pc_segment
-            lines_with_pcs.append('\n' + pc_segment + line)
-        body = ''.join(s for s in lines_with_pcs)
-        proof_str = ' ' * std_length + str(self) + ' {' + body
-        if annotations:
-            proof_str += '\n' + ' ' * (std_length - 2) + '| '
-            post = [n.pred for n in self.eof.nodes]
-            proof_str += ' ' * INDENT + '{' + str(post) + '}'
-        proof_str += '\n' + ' ' * std_length + '}' + '\n'
+        proof_str = str(self) + ' {' + body + '\n' + ' ' * INDENT + '{' + \
+            str(Or([n.pred for n in self.eof.nodes])) + '}' + '\n' + '}' + '\n'
         return proof_str
 
 
@@ -193,10 +169,8 @@ class Assignment(Statement):
         self.pairs = pairs  # tuples of (LHS, RHS) values
 
     def __str__(self):
-        lhs = str(self.pairs[0][0])
-        lhs = lhs.join([self.pairs[i][0] for i in range(1, len(self.pairs))])
-        rhs = str(self.pairs[0][1])
-        rhs = rhs.join([self.pairs[i][1] for i in range(1, len(self.pairs))])
+        lhs = ', '.join([str(p[0]) for p in self.pairs])
+        rhs = ', '.join([str(p[1]) for p in self.pairs])
         return lhs + " := " + rhs + ";"
 
     def sp(self, pre):

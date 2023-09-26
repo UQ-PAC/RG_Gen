@@ -47,12 +47,12 @@ def main():
     program_post = And(local_posts)
 
     # Print results.
-    # for t in threads:
-    #     print()
-    #     print(t.get_proof_str())
-    # print()
-    # print('Derived Postcondition: ' + str(simplify(program_post).serialize()))
-    # print()
+    for t in threads:
+        print()
+        print(t.get_proof_str())
+    print()
+    print('Derived Postcondition: ' + str(simplify(program_post).serialize()))
+    print()
     if is_sat(And(program_post, Not(specified_postcondition))):
         print(f'{Fore.RED}Verification Unsuccessful.{Fore.RESET}')
     else:
