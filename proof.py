@@ -1,6 +1,5 @@
 from pysmt.shortcuts import *
 from typing import List
-from sympy import *
 
 
 # Indent for printing proof outlines.
@@ -36,7 +35,7 @@ class Statement:
         # The precondition of this statement. Formally, a proof outline is a
         # list of <precondition, instruction> pairs. In this implementation,
         # each precondition is a disjunction of nodes.
-        self.nodes = None
+        self.nodes = []
         # The thread this statement belongs to.
         self.thread = None
 
@@ -62,7 +61,6 @@ class Statement:
         changed. This is OK, since the SP transformers for these statements are
         quite simple (e.g. they do not contain quantifiers).
         """
-        # Todo: self.thread.fixpoint_reached = False on the first iteration!
         # Add incoming nodes to the precondition.
         self.nodes += input_nodes
         # List of nodes that have been newly added in this call.
@@ -142,16 +140,14 @@ class Procedure:
         self.pc_symb = Symbol('pc_' + str(t_id), INT)
         # True iff the thread has reached a fixpoint.
         self.fixpoint_reached = False
-        # The variables local to this thread.
-        self.local_vars = []
         # The environment instructions that may interfere with this thread.
         self.interfering_assignments = []
 
-    def regenerate_proof(self, pre):
+    def regenerate_proof(self, nodes):
         self.fixpoint_reached = True
         for stmt in self.block:
-            pre = stmt.regenerate_proof(pre)
-        return self.eof.regenerate_proof(pre)
+            nodes = stmt.regenerate_proof(nodes)
+        return self.eof.regenerate_proof(nodes)
 
     def __str__(self):
         return "procedure " + self.name + "()"
@@ -218,7 +214,7 @@ class Assignment(Statement):
             y = FreshSymbol(INT)
             ys.append(y)
             subs[x] = y
-            equalities.append(Equals(x, self.pairs[i][1].substitute({x, y})))
+            equalities.append(Equals(x, self.pairs[i][1].substitute({x: y})))
         sp = Exists(ys, And(pre.substitute(subs), And(equalities)))
         return qelim(sp, 'z3')
 

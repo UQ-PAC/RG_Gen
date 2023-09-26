@@ -130,7 +130,7 @@ class Transform(Transformer):
 
     @staticmethod
     def globals(args):
-        return args
+        return set(args)
 
     def procedure(self, args):
         self.t_id += 1
@@ -142,7 +142,7 @@ class Transform(Transformer):
 
     @staticmethod
     def assign(args):
-        return Assignment([args[0], args[1]])
+        return Assignment([(args[0], args[1])])
 
     @staticmethod
     def branch(args):
