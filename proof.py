@@ -99,26 +99,21 @@ class Statement:
                 output_nodes.append(Node(self.sp(node.pred), node, None))
         return output_nodes
 
-
     def get_proof_str(self):
-        proof_str = ''
         disjuncts = [n.pred for n in self.nodes]
-        proof_str += '{' + str(Or(disjuncts)) + '}'
+        proof_str = '{' + str(Or(disjuncts)) + '}'
         if not isinstance(self, Eof):
             proof_str += '\n' + str(self)
         if isinstance(self, Conditional):
             proof_str += ' {'
             body = ''
             for n in self.true_block:
-                body += '\n'
-                body += n.get_proof_str()
+                body += '\n' + n.get_proof_str()
             body = body.replace('\n', '\n' + ' ' * INDENT)
-            proof_str += body
-            proof_str += '\n} else {'
+            proof_str += body + '\n} else {'
             body = ''
             for n in self.false_block:
-                body += '\n'
-                body += n.get_proof_str()
+                body += '\n' + n.get_proof_str()
             body = body.replace('\n', '\n' + ' ' * INDENT)
             proof_str += body
             proof_str += '\n}' if body else '}'
