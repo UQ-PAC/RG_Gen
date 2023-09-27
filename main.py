@@ -5,12 +5,15 @@ from proof import *
 from lark import Lark
 import sys
 from colorama import Fore
+import time
 
 
 def main():
     if len(sys.argv) != 2:
         print('Usage: main.py filename')
         exit(1)
+
+    precompute_start = time.time()
 
     # Parse test file.
     program = parse_test_file(sys.argv[1])
@@ -32,22 +35,38 @@ def main():
     # Check for local variables in the precondition.
     check_precondition(specified_precondition, global_variables)
 
+    analysis_start = time.time()
+
     # Perform analysis.
+    i = 1
+    print(f'Iteration {i}...', end='')
+    iter_start = time.time()
     for t in threads:
         t.regenerate_proof([Node(specified_precondition, None, None)])
     fixpoint_reached = False
+    iter_end = time.time()
+    print(f'({iter_end - iter_start:.2f}s)')
     while not fixpoint_reached:
+        i += 1
+        print(f'Iteration {i}...', end='')
+        iter_start = iter_end
         fixpoint_reached = True
         for t in threads:
             t.regenerate_proof([])
             if not t.fixpoint_reached:
                 fixpoint_reached = False
+        iter_end = time.time()
+        print(f'({iter_end - iter_start:.2f}s)')
 
     # Compute program postcondition.
     local_posts = [t.get_post() for t in threads]
     program_post = And(local_posts)
 
+    analysis_end = time.time()
+
     # Print results.
+    print(f'Precompute time: {analysis_start - precompute_start:.2f}s')
+    print(f'Analysis time: {analysis_end - analysis_start:.2f}s')
     for t in threads:
         print()
         print(t.get_proof_str())
