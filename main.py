@@ -1,3 +1,5 @@
+from pysmt.simplifier import BddSimplifier
+
 from parser import *
 from proof import *
 from lark import Lark
@@ -26,7 +28,9 @@ def main():
     # Allocate to each node the thread it belongs to.
     init_owner_thread(threads)
     # Check for duplicated local variables.
-    verify_local_vars(threads, global_variables)
+    check_for_duplicated_locals(threads, global_variables)
+    # Check for local variables in the precondition.
+    check_precondition(specified_precondition, global_variables)
 
     # Perform analysis.
     for t in threads:
@@ -130,7 +134,7 @@ def init_owner_thread(threads: list[Procedure]):
         recurse_cfg(t, owner_thread_initialiser)
 
 
-def verify_local_vars(threads: list[Procedure], global_vars):
+def check_for_duplicated_locals(threads: list[Procedure], global_vars):
     """
     Provides each thread with a list of its local variables.
     """
@@ -157,6 +161,14 @@ def verify_local_vars(threads: list[Procedure], global_vars):
     if duplicates:
         exit(f'Error: Duplicate local variables: {str(duplicates)}.\n'
              f'Local variables must be distinct across threads.')
+
+
+def check_precondition(specified_pre, global_vars):
+    pre_vars = set(get_free_variables(specified_pre))
+    err_vars = pre_vars.difference(global_vars)
+    if err_vars:
+        exit(f'Error: Local variables in precondition: {str(err_vars)}.\n'
+             f'Local variables must not be constrained in the precondition.')
 
 # =========================== Testing ============================
 

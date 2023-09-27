@@ -1,0 +1,11 @@
+precondition: x == 0
+postcondition: x == 3
+globals: x
+
+procedure T1() {
+    x := x + 1;
+}
+
+procedure T2() {
+    x := x + 2;
+}

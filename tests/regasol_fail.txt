@@ -1,0 +1,15 @@
+precondition: x == 1 && z == 1
+postcondition: x == 0
+globals: x z
+
+procedure T1() {
+    r := 0;
+    if (z == 0) {
+        x := 0;
+    } else {}
+    x := r;
+}
+
+procedure T2() {
+    z := 0;
+}

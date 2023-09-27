@@ -1,0 +1,10 @@
+precondition: a == 0
+postcondition: true
+globals:
+
+procedure T1() {
+    a := 1;
+}
+
+procedure T2() {
+}
