@@ -1,5 +1,3 @@
-from pysmt.simplifier import BddSimplifier
-
 from parser import *
 from proof import *
 from lark import Lark
@@ -17,66 +15,148 @@ def main():
 
     # Parse test file.
     program = parse_test_file(sys.argv[1])
-    specified_precondition = program[0]
-    specified_postcondition = program[1]
+    specified_pre = program[0]
+    specified_post = program[1]
     global_variables = program[2]
     threads: list[Procedure] = program[3:]
+    proof = Proof(specified_pre, specified_post, threads)
 
     # Pre-compute necessary CFG-node information.
     # Get the list of global assignments contained in each thread.
     global_assignments: dict[Procedure, list[Assignment]] = \
-        init_global_assignments(threads, global_variables)
+        init_global_assignments(proof, global_variables)
     # Allocate to each thread the list of environment global assignments.
-    init_interfering_assignments(threads, global_assignments)
+    init_interfering_assignments(proof, global_assignments)
     # Allocate to each node the thread it belongs to.
-    init_owner_thread(threads)
-    # Check for duplicated local variables.
-    check_for_duplicated_locals(threads, global_variables)
+    init_owner_thread(proof)
+    # Initialise local variables.
+    init_local_vars(proof, global_variables)
     # Check for local variables in the precondition.
-    check_precondition(specified_precondition, global_variables)
-
-    analysis_start = time.time()
+    check_precondition(specified_pre, global_variables)
+    # Provide each statement with the set of global assignments from which they
+    # are unreachable in the CFG.
+    init_unreachable_from(proof, global_variables)
 
     # Perform analysis.
-    i = 1
-    print(f'Iteration {i}...', end='')
-    iter_start = time.time()
-    for t in threads:
-        t.regenerate_proof([Node(specified_precondition, None, None)])
-    fixpoint_reached = False
-    iter_end = time.time()
-    print(f'({iter_end - iter_start:.2f}s)')
-    while not fixpoint_reached:
-        i += 1
-        print(f'Iteration {i}...', end='')
-        iter_start = iter_end
-        fixpoint_reached = True
-        for t in threads:
-            t.regenerate_proof([])
-            if not t.fixpoint_reached:
-                fixpoint_reached = False
-        iter_end = time.time()
-        print(f'({iter_end - iter_start:.2f}s)')
-
-    # Compute program postcondition.
-    local_posts = [t.get_post() for t in threads]
-    program_post = And(local_posts)
-
-    analysis_end = time.time()
-
+    start = time.time()
+    success = conduct_proof(proof)
+    end = time.time()
     # Print results.
-    print(f'Precompute time: {analysis_start - precompute_start:.2f}s')
-    print(f'Analysis time: {analysis_end - analysis_start:.2f}s')
+    print(f'Precompute time: {start - precompute_start:.2f}s')
+    print(f'Analysis time: {end - start:.2f}s')
     for t in threads:
-        print()
-        print(t.get_proof_str())
-    print()
-    print('Derived Postcondition: ' + str(simplify(program_post).serialize()))
-    print()
-    if is_sat(And(program_post, Not(specified_postcondition))):
-        print(f'{Fore.RED}Verification Unsuccessful.{Fore.RESET}')
-    else:
-        print(f'{Fore.GREEN}Verification Successful!{Fore.RESET}')
+        print('\n' + t.get_proof_str())
+    print('\nDerived Postcondition: ' +
+          str(simplify(proof.generated_post).serialize()))
+    msg = f'\n{Fore.GREEN}Verification Successful{Fore.RESET}' if success else \
+        f'\n{Fore.RED}Verification Unsuccessful{Fore.RESET}'
+    print(msg)
+
+
+def conduct_proof(proof):
+    # max_iterations is the maximum number of times a proof can fail???
+    while True:
+        verified = fixpoint_proof(proof)
+        if verified:
+            return True
+        # Fixpoint proof was cut short due to verification failure.
+        problem_nodes = get_problem_post_nodes(proof)
+        repeated_assign = None
+        for node in problem_nodes:
+            repeated_assign = node.find_repeated_assign([])
+            if not repeated_assign:
+                print('no repeated assign found for ' + str(node.pred))
+            if repeated_assign:
+                proof.add_auxiliary_variable(repeated_assign)
+                proof.clear_preconditions()
+                break
+        if not repeated_assign:
+            return False
+
+
+def fixpoint_proof(proof: Proof):
+    """
+    Repeatedly regenerates the proof outline for each thread, as per the
+    strongest-proof approach. Stops when the combined postcondition ceases to
+    satisfy the specified postcondition.
+    Returns true iff a valid proof is found.
+    """
+    i = 1
+    regenerate_proof(proof, i)
+    fixpoint = False
+    while not fixpoint:
+        i += 1
+        fixpoint = regenerate_proof(proof, i)
+        if is_sat(And(proof.generated_post, Not(proof.specified_post))) and \
+                is_valid(Implies(proof.specified_post, proof.generated_post)):
+            return False
+    return True
+
+
+def get_problem_post_nodes(proof: Proof):
+
+    problem_states = And(proof.generated_post, Not(proof.specified_post))
+
+    def is_problem_node(node):
+        return is_sat(And(node.pred, problem_states))
+
+    problem_post_nodes = set()
+    for t in proof.threads:
+        for n in t.get_post_nodes():
+            if is_problem_node(n):
+                problem_post_nodes.add(n)
+    return problem_post_nodes
+
+
+def regenerate_proof(proof: Proof, iteration_number):
+    start = time.time()
+    print(f'Iteration {iteration_number}...', end='')
+    fixpoint = True
+    for t in proof.threads:
+        t.regenerate_proof([Node(proof.specified_pre, None, None)])
+        if not t.fixpoint_reached:
+            fixpoint = False
+    proof.generated_post = And([t.get_post() for t in proof.threads])
+    end = time.time()
+    print(f'({end - start:.2f}s)')
+    return fixpoint
+
+
+def get_global_assigns_in_block(block: list[Statement], global_vars):
+
+    def add_if_global_assign(node):
+        if isinstance(node, Assignment):
+            for lhs_symb in [node.pairs[i][0] for i in range(len(node.pairs))]:
+                if lhs_symb in global_vars:
+                    global_assigns.add(node)
+                    break
+
+    global_assigns = set()
+    for n in block:
+        add_if_global_assign(n)
+        if isinstance(n, Conditional):
+            global_assigns |= get_global_assigns_in_block(n.true_block,
+                                                          global_vars)
+            global_assigns |= get_global_assigns_in_block(n.false_block,
+                                                          global_vars)
+    return global_assigns
+
+
+def init_unreachable_from(proof, global_vars):
+
+    def helper(block: list[Statement], reached):
+        for node in block:
+            node.unreachable_from |= global_assigns - reached
+            reached.add(node)
+            if isinstance(node, Conditional):
+                reached_copy = reached.copy()
+                helper(node.true_block, reached)
+                helper(node.false_block, reached_copy)
+                reached |= reached_copy
+
+    for t in proof.threads:
+        global_assigns = get_global_assigns_in_block(t.block, global_vars)
+        helper(t.block, set())
 
 
 def parse_test_file(filename):
@@ -104,7 +184,7 @@ def recurse_cfg(node, function):
         function(node)
 
 
-def init_global_assignments(threads: list[Procedure], global_vars):
+def init_global_assignments(proof, global_vars):
     """
     Returns a dictionary of {thread -> list[Assignment]} that maps each thread
     to a list of its contained global assignments. This is necessary because we
@@ -120,7 +200,7 @@ def init_global_assignments(threads: list[Procedure], global_vars):
                     break
 
     thread_to_global_assigns = {}
-    for t in threads:
+    for t in proof.threads:
         global_assigns = []
         recurse_cfg(t, global_assignments_initialiser)
         thread_to_global_assigns[t] = global_assigns
@@ -128,13 +208,13 @@ def init_global_assignments(threads: list[Procedure], global_vars):
     return thread_to_global_assigns
 
 
-def init_interfering_assignments(threads: list[Procedure], global_assigns):
+def init_interfering_assignments(proof, global_assigns):
     """
     Attaches to each thread a list of all environment instructions that may
     destabilise one of its assertions. This list happens to be the list of
     all global assignments in the environment.
     """
-    for t1 in threads:
+    for t1 in proof.threads:
         interfering_assigns = []
         for t2, assigns in global_assigns.items():
             if t1 != t2:
@@ -142,20 +222,21 @@ def init_interfering_assignments(threads: list[Procedure], global_assigns):
         t1.interfering_assignments = interfering_assigns
 
 
-def init_owner_thread(threads: list[Procedure]):
+def init_owner_thread(proof):
     """
     Provides each statement with the thread it is in.
     """
     def owner_thread_initialiser(node):
         node.thread = t
 
-    for t in threads:
+    for t in proof.threads:
         recurse_cfg(t, owner_thread_initialiser)
 
 
-def check_for_duplicated_locals(threads: list[Procedure], global_vars):
+def init_local_vars(proof, global_vars):
     """
     Provides each thread with a list of its local variables.
+    Additionally, checks for duplicate local variables.
     """
     def get_vars_used(node):
         if isinstance(node, Assignment):
@@ -165,20 +246,21 @@ def check_for_duplicated_locals(threads: list[Procedure], global_vars):
         elif not isinstance(node, Eof):
             vars_used.update(get_free_variables(node.cond))
 
-    locals_by_thread = []
+    threads = proof.threads
     for t in threads:
         vars_used = set()
         recurse_cfg(t, get_vars_used)
         local_vars = vars_used - global_vars
-        locals_by_thread.append(local_vars)
+        t.local_vars.extend(local_vars)
 
-    duplicates = set()
+    duplicates = []
     for i in range(len(threads)):
         for j in range(i + 1, len(threads)):
-            duplicates.update(locals_by_thread[i] & locals_by_thread[j])
-
+            duplicates.extend([v for v in threads[i].local_vars
+                               if v in threads[j].local_vars])
     if duplicates:
-        exit(f'Error: Duplicate local variables: {str(duplicates)}.\n'
+        dupes_set = frozenset([v for v in duplicates])
+        exit(f'Error: Duplicate local variables: {str(dupes_set)}.\n'
              f'Local variables must be distinct across threads.')
 
 

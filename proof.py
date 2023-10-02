@@ -5,11 +5,45 @@ from typing import List
 # Indent for printing proof outlines.
 INDENT = 4
 
+
 class Node:
     def __init__(self, predicate, local_parent, environment_parent):
+        self.statement = None
         self.pred = predicate
         self.local_parent = local_parent
-        self.environment_parent = environment_parent
+        self.env_parent = environment_parent
+
+    def set_statement(self, statement):
+        self.statement = statement
+
+    def find_repeated_assign(self, stmts_passed: list):
+        if self.statement in stmts_passed:
+            return self.statement
+        if self.env_parent:
+            stmts_passed_copy = stmts_passed.copy()
+            stmts_passed_copy.extend(self.statement.unreachable_from)
+            assign = self.env_parent.find_repeated_assign(stmts_passed_copy)
+            if assign:
+                return assign
+        if self.local_parent:
+            return self.local_parent.find_repeated_assign(stmts_passed)
+        return None
+
+
+    def find_loop(self, statements_passed):
+        if self in statements_passed:
+            return self
+        statements_passed.add(self)
+        if self.env_parent:
+            loop = self.env_parent.find_loop(statements_passed)
+            if loop:
+                return loop
+        elif self.local_parent:
+            loop = self.local_parent.find_loop(statements_passed)
+            if loop:
+                return loop
+        return None
+
 
 class Statement:
     """
@@ -38,6 +72,8 @@ class Statement:
         self.nodes = []
         # The thread this statement belongs to.
         self.thread = None
+        # The global assignments from which this statement is unreachable.
+        self.unreachable_from = set()
 
     def regenerate_proof(self, input_nodes):
         """
@@ -61,6 +97,9 @@ class Statement:
         changed. This is OK, since the SP transformers for these statements are
         quite simple (e.g. they do not contain quantifiers).
         """
+        # Tell these new nodes that they are preconditions of this statement.
+        for node in input_nodes:
+            node.set_statement(self)
         # Add incoming nodes to the precondition.
         self.nodes += input_nodes
         # List of nodes that have been newly added in this call.
@@ -72,10 +111,11 @@ class Statement:
             for env_node in assign.nodes:
                 for local_node in self.nodes:
                     conjunction = And(local_node.pred, env_node.pred)
-                    img = assign.sp(conjunction)
+                    img = assign.abstract_sp(conjunction)
                     if is_sat(And(img, Not(precondition))):
                         # local_node is unstable under env_node
                         img_node = Node(img, local_node, env_node)
+                        img_node.set_statement(self)
                         self.nodes.append(img_node)
                         new_nodes.append(img_node)
                         precondition = Or(precondition, img)
@@ -98,6 +138,14 @@ class Statement:
             for node in new_nodes:
                 output_nodes.append(Node(self.sp(node.pred), node, None))
         return output_nodes
+
+    def reset(self):
+        self.nodes = []
+        if isinstance(self, Conditional):
+            for stmt in self.true_block:
+                stmt.reset()
+            for stmt in self.false_block:
+                stmt.reset()
 
     def get_proof_str(self):
         disjuncts = [n.pred for n in self.nodes]
@@ -137,15 +185,25 @@ class Procedure:
         self.fixpoint_reached = False
         # The environment instructions that may interfere with this thread.
         self.interfering_assignments = []
+        # Variables that are local to this procedure.
+        self.local_vars = []
 
     def get_post(self):
         eof_stmt = self.block[-1]
         return Or([n.pred for n in eof_stmt.nodes])
 
+    def get_post_nodes(self):
+        return self.block[-1].nodes
+
     def regenerate_proof(self, nodes):
         self.fixpoint_reached = True
         for stmt in self.block:
             nodes = stmt.regenerate_proof(nodes)
+
+    def reset(self):
+        # Reset all preconditions.
+        for stmt in self.block:
+            stmt.reset()
 
     def __str__(self):
         return "procedure " + self.name + "()"
@@ -188,6 +246,9 @@ class Assignment(Statement):
             equalities.append(Equals(x, self.pairs[i][1].substitute({x: y})))
         sp = Exists(ys, And(pre.substitute(subs), And(equalities)))
         return qelim(sp, 'z3')
+
+    def abstract_sp(self, pre):
+        return qelim(Exists(self.thread.local_vars, self.sp(pre)), 'z3')
 
 
 class Assumption(Statement):
@@ -239,3 +300,25 @@ class Conditional(Statement):
 class Eof(Statement):
     def __init__(self):
         super().__init__()
+
+
+class Proof:
+    def __init__(self, specified_pre, specified_post, threads):
+        self.specified_pre = specified_pre
+        self.specified_post = specified_post
+        self.threads = threads
+        self.generated_post = FALSE()
+
+    def clear_preconditions(self):
+        for t in self.threads:
+            t.reset()
+
+    def add_auxiliary_variable(self, assign: Assignment):
+        # Create auxiliary variable.
+        aux_var = FreshSymbol(INT)
+        # Append to 'assign'.
+        # Note: 'assign' is already an interfering assignment for other threads,
+        # since it is global.
+        assign.pairs.append((aux_var, Int(1)))
+        # Add to precondition.
+        self.specified_pre = And(self.specified_pre, Equals(aux_var, Int(0)))
