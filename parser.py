@@ -67,7 +67,7 @@ grammar = """
     // assigned to arithmetic expressions.
     assign: variable ":=" a_expr ";"
     
-    // The parser does not currently support else blocks.
+    // If statements must have else blocks.
     branch: _IF "(" impl ")" block _ELSE block
     assume: _ASSUME impl ";"
     assertion: _ASSERT impl ";"
