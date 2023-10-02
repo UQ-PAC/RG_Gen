@@ -14,7 +14,7 @@ def simplify_formula(formula: FNode):
     i = 0
     while i < len(disjuncts):
         if not is_sat(disjuncts[i]):
-            disjuncts[i].pop()
+            disjuncts.pop(i)
             continue
         conjuncts = split_conjuncts(disjuncts[i])
         simplify_conjuncts(conjuncts)

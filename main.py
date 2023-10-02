@@ -4,6 +4,8 @@ from lark import Lark
 import sys
 from colorama import Fore
 import time
+from simplifier import simplify_formula
+from printer import to_str
 
 
 def main():
@@ -47,7 +49,7 @@ def main():
     for t in threads:
         print('\n' + t.get_proof_str())
     print('\nDerived Postcondition: ' +
-          str(simplify(proof.generated_post).serialize()))
+          to_str(simplify_formula(proof.generated_post)))
     msg = f'\n{Fore.GREEN}Verification Successful{Fore.RESET}' if success else \
         f'\n{Fore.RED}Verification Unsuccessful{Fore.RESET}'
     print(msg)
@@ -64,8 +66,6 @@ def conduct_proof(proof):
         repeated_assign = None
         for node in problem_nodes:
             repeated_assign = node.find_repeated_assign([])
-            if not repeated_assign:
-                print('no repeated assign found for ' + str(node.pred))
             if repeated_assign:
                 proof.add_auxiliary_variable(repeated_assign)
                 proof.clear_preconditions()

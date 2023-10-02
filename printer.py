@@ -11,7 +11,7 @@ symbols = {NOT: '!', AND: ' && ', OR: ' || ', IMPLIES: ' ==> '}
 def to_str(formula: FNode):
     if formula.is_equals():
         return str(formula.args()[0]) + ' == ' + str(formula.args()[1])
-    elif formula.is_not:
+    elif formula.is_not():
         arg: FNode = formula.args()[0]
         arg_type = arg.node_type()
         if arg_type in order.keys():
@@ -29,4 +29,7 @@ def to_str(formula: FNode):
             args.append(arg_str)
         return args[0] + symbols[node_type] + args[1]
     else:
-        return str(formula)
+        string = str(formula)
+        if string[0] == '(' and string[-1] == ')':
+            string = string[1:-1]
+        return string
