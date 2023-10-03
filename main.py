@@ -55,7 +55,6 @@ def main():
           to_str(simplify_formula(proof.generated_post)))
 
 
-
 def conduct_proof(proof):
     attempt = 0
     while True:

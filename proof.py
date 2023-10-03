@@ -31,7 +31,6 @@ class Node:
             return self.local_parent.find_repeated_assign(stmts_passed)
         return None
 
-
     def find_loop(self, statements_passed):
         if self in statements_passed:
             return self
