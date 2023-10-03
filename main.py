@@ -44,34 +44,43 @@ def main():
     success = conduct_proof(proof)
     end = time.time()
     # Print results.
-    print(f'Precompute time: {start - precompute_start:.2f}s')
+    msg = f'{Fore.GREEN}Verification Successful{Fore.RESET}' if success else \
+        f'{Fore.RED}Verification Unsuccessful{Fore.RESET}'
+    print(f'\n{msg}')
+    print(f'\nPrecompute time: {start - precompute_start:.2f}s')
     print(f'Analysis time: {end - start:.2f}s')
     for t in threads:
         print('\n' + t.get_proof_str())
     print('\nDerived Postcondition: ' +
           to_str(simplify_formula(proof.generated_post)))
-    msg = f'\n{Fore.GREEN}Verification Successful{Fore.RESET}' if success else \
-        f'\n{Fore.RED}Verification Unsuccessful{Fore.RESET}'
-    print(msg)
+
 
 
 def conduct_proof(proof):
-    # max_iterations is the maximum number of times a proof can fail???
+    attempt = 0
     while True:
+        attempt += 1
+        print(f'Attempt {attempt}')
         verified = fixpoint_proof(proof)
         if verified:
             return True
         # Fixpoint proof was cut short due to verification failure.
+        print(f'Attempt {attempt} failed. Generating auxiliary variable...')
         problem_nodes = get_problem_post_nodes(proof)
         repeated_assign = None
         for node in problem_nodes:
             repeated_assign = node.find_repeated_assign([])
             if repeated_assign:
+                print(f'Generated auxiliary variable for assignment '
+                      f'{str(repeated_assign)[:-1]} in '
+                      f'{str(repeated_assign.thread)}.')
                 proof.add_auxiliary_variable(repeated_assign)
                 proof.clear_preconditions()
                 break
         if not repeated_assign:
+            print('Unable to generate an adequate auxiliary variable.')
             return False
+        print()
 
 
 def fixpoint_proof(proof: Proof):
