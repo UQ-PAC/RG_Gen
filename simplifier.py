@@ -46,8 +46,10 @@ def simplify_disjuncts(disjuncts: list[FNode]):
 
 def split_disjuncts(formula):
     if formula.is_or():
-        return split_disjuncts(formula.args()[0]) + \
-               split_disjuncts(formula.args()[1])
+        disjuncts = []
+        for arg in formula.args():
+            disjuncts += split_disjuncts(arg)
+        return disjuncts
     if formula.is_not() or formula.is_and() or not formula.is_bool_op():
         return [formula]
     exit(f"Error: Unexpected operator '{type(formula)}' in predicate.")
@@ -55,8 +57,10 @@ def split_disjuncts(formula):
 
 def split_conjuncts(formula):
     if formula.is_and():
-        return split_conjuncts(formula.args()[0]) + \
-               split_conjuncts(formula.args()[1])
+        conjuncts = []
+        for arg in formula.args():
+            conjuncts += split_conjuncts(arg)
+        return conjuncts
     if formula.is_not() or not formula.is_bool_op():
         return [formula]
     exit(f"Error: Unexpected operator '{type(formula)}' in predicate.")
@@ -78,11 +82,9 @@ def simplify_out_implication(formula):
         return Or(Not(simplify_out_implication(formula.args()[0])),
                   simplify_out_implication(formula.args()[1]))
     if formula.is_or():
-        return Or(simplify_out_implication(formula.args()[0]),
-                  simplify_out_implication(formula.args()[1]))
+        return Or([simplify_out_implication(arg) for arg in formula.args()])
     if formula.is_and():
-        return And(simplify_out_implication(formula.args()[0]),
-                   simplify_out_implication(formula.args()[1]))
+        return And([simplify_out_implication(arg) for arg in formula.args()])
     if formula.is_not():
         return Not(simplify_out_implication(formula.args()[0]))
     exit(f"Error: Unexpected operator '{type(formula)}' in predicate.")
@@ -105,18 +107,14 @@ def simplify_negation(formula):
         if body.is_not():
             return simplify_negation(body.args()[0])
         if body.is_or():
-            return And(simplify_negation(Not(body.args()[0])),
-                       simplify_negation(Not(body.args()[1])))
+            return And([simplify_negation(Not(arg)) for arg in body.args()])
         if body.is_and():
-            return Or(simplify_negation(Not(body.args()[0])),
-                      simplify_negation(Not(body.args()[1])))
+            return Or([simplify_negation(Not(arg)) for arg in body.args()])
         exit(f"Error: Unexpected operator '{type(formula)}' in predicate.")
     if formula.is_or():
-        return Or(simplify_negation(formula.args()[0]),
-                  simplify_negation(formula.args()[1]))
+        return Or([simplify_negation(arg) for arg in formula.args()])
     if formula.is_and():
-        return And(simplify_negation(formula.args()[0]),
-                   simplify_negation(formula.args()[1]))
+        return And([simplify_negation(arg) for arg in formula.args()])
     exit(f"Error: Unexpected operator '{type(formula)}' in predicate.")
 
 
@@ -127,23 +125,26 @@ def distribute_over_conjunction(formula) -> (FNode, bool):
     if formula.is_not() or not formula.is_bool_op():
         return formula, True
     if formula.is_or():
-        left, fixpoint_left = distribute_over_conjunction(formula.args()[0])
-        right, fixpoint_right = distribute_over_conjunction(formula.args()[1])
-        fixpoint = fixpoint_left and fixpoint_right
-        return Or(left, right), fixpoint
+        new_args = []
+        fixpoint_reached = True
+        for arg in formula.args():
+            new_arg, fixpoint = distribute_over_conjunction(arg)
+            new_args.append(new_arg)
+            fixpoint_reached = fixpoint_reached and fixpoint
+        return Or(new_args), fixpoint_reached
     if formula.is_and():
-        left = formula.args()[0]
-        right = formula.args()[1]
-        if left.is_or():
-            distributed = Or(And(right, left.args()[0]),
-                             And(right, left.args()[1]))
-            return distribute_over_conjunction(distributed)[0], False
-        if right.is_or():
-            distributed = Or(And(left, right.args()[0]),
-                             And(left, right.args()[1]))
-            return distribute_over_conjunction(distributed)[0], False
-        left, fixpoint_left = distribute_over_conjunction(left)
-        right, fixpoint_right = distribute_over_conjunction(right)
-        fixpoint = fixpoint_left and fixpoint_right
-        return And(left, right), fixpoint
+        args = formula.args()
+        for i in range(len(args)):
+            arg = args[i]
+            if arg.is_or():
+                conjuncts = list(args[0:i] + args[i+1:])
+                distributed = Or([And(conjuncts + [a]) for a in arg.args()])
+                return distribute_over_conjunction(distributed)[0], False
+        new_args = []
+        fixpoint_reached = True
+        for arg in args:
+            new_arg, fixpoint = distribute_over_conjunction(arg)
+            new_args.append(new_arg)
+            fixpoint_reached = fixpoint_reached and fixpoint
+        return And(new_args), fixpoint_reached
     exit(f"Error: Unexpected operator '{type(formula)}' in predicate.")

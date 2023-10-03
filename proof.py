@@ -1,5 +1,7 @@
 from pysmt.shortcuts import *
 from typing import List
+from simplifier import simplify_formula
+from printer import to_str
 
 
 # Indent for printing proof outlines.
@@ -149,7 +151,7 @@ class Statement:
 
     def get_proof_str(self):
         disjuncts = [n.pred for n in self.nodes]
-        proof_str = '{' + str(Or(disjuncts)) + '}'
+        proof_str = '{' + to_str(simplify_formula(Or(disjuncts))) + '}'
         if not isinstance(self, Eof):
             proof_str += '\n' + str(self)
         if isinstance(self, Conditional):

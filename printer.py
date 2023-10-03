@@ -20,14 +20,15 @@ def to_str(formula: FNode):
     elif formula.is_and() or formula.is_or() or formula.is_implies():
         node_type = formula.node_type()
         args = []
-        for i in range(2):
+        for i in range(len(formula.args())):
             arg: FNode = formula.args()[i]
             arg_type = arg.node_type()
             arg_str = to_str(arg)
-            if arg_type in order.keys() and order[arg_type] > order[node_type]:
+            if arg_type in order.keys() and order[arg_type] > order[node_type] \
+                    or formula.is_implies() and i == 0 and arg.is_implies():
                 arg_str = '(' + arg_str + ')'
             args.append(arg_str)
-        return args[0] + symbols[node_type] + args[1]
+        return symbols[node_type].join(args)
     else:
         string = str(formula)
         if string[0] == '(' and string[-1] == ')':
