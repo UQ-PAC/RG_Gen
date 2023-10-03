@@ -31,20 +31,6 @@ class Node:
             return self.local_parent.find_repeated_assign(stmts_passed)
         return None
 
-    def find_loop(self, statements_passed):
-        if self in statements_passed:
-            return self
-        statements_passed.add(self)
-        if self.env_parent:
-            loop = self.env_parent.find_loop(statements_passed)
-            if loop:
-                return loop
-        elif self.local_parent:
-            loop = self.local_parent.find_loop(statements_passed)
-            if loop:
-                return loop
-        return None
-
 
 class Statement:
     """
@@ -127,8 +113,8 @@ class Statement:
             if_nodes = []
             else_nodes = []
             for n in new_nodes:
-                if_nodes.append(Node(And(n.pred, self.cond), self, None))
-                else_nodes.append(Node(And(n.pred, Not(self.cond)), self, None))
+                if_nodes.append(Node(And(n.pred, self.cond), n, None))
+                else_nodes.append(Node(And(n.pred, Not(self.cond)), n, None))
             for stmt in self.true_block:
                 if_nodes = stmt.regenerate_proof(if_nodes)
             for stmt in self.false_block:

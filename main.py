@@ -107,7 +107,8 @@ def fixpoint_proof(proof: Proof):
         i += 1
         fixpoint = regenerate_proof(proof, i)
         if is_sat(And(proof.generated_post, Not(proof.specified_post))) and \
-                is_valid(Implies(proof.specified_post, proof.generated_post)):
+                (i >= len(proof.threads) or
+                 is_valid(Implies(proof.specified_post, proof.generated_post))):
             return False
     return True
 

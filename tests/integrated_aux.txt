@@ -1,0 +1,21 @@
+precondition: x == 0 && y == 0
+postcondition: y == 3
+globals: x y z
+
+procedure T1() {
+    if (z == 0) {
+        x := x + 1;
+    } else {
+        y := y + 1;
+    }
+    if (z == 0) {
+        x := x + 1;
+    } else {
+        y := y + 1;
+    }
+    y := y + x;
+}
+
+procedure T2() {
+    y := y + 1;
+}
