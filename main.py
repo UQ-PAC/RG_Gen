@@ -43,6 +43,7 @@ def main():
     start = time.time()
     success = conduct_proof(proof)
     end = time.time()
+
     # Print results.
     msg = f'{Fore.GREEN}Verification Successful{Fore.RESET}' if success else \
         f'{Fore.RED}Verification Unsuccessful{Fore.RESET}'
@@ -53,6 +54,16 @@ def main():
         print('\n' + t.get_proof_str())
     print('\nDerived Postcondition: ' +
           to_str(simplify_formula(proof.generated_post)))
+
+    # Extract rely-guarantee conditions.
+    print('\nExtracting rely-guarantee conditions...')
+    for t in threads:
+        print(f'\nGuarantee for {t.name}:')
+        s = to_str(simplify_formula(generate_guarantee(t, global_variables)))
+        # It is necessary to do this substitution just before printing, since
+        # pySMT does not store single quotes in a nice format. In future, the
+        # input program should be checked for the illegal string '_prime'.
+        print(s.replace('_prime', "'"))
 
 
 def conduct_proof(proof):
@@ -128,6 +139,25 @@ def regenerate_proof(proof: Proof, iteration_number):
     end = time.time()
     print(f'({end - start:.2f}s)')
     return fixpoint
+
+
+def generate_guarantee(thread: Procedure, global_vars):
+    global_assigns = get_global_assigns_in_block(thread.block, global_vars)
+    all_equal = []
+    for g in global_vars:
+        g_prime = Symbol(g.symbol_name() + '_prime',
+                         g.symbol_type())
+        all_equal.append(Equals(g_prime, g))
+    disjuncts = [And(all_equal)]
+    for assign in global_assigns:
+        precondition = Or([n.pred for n in assign.nodes])
+        conjuncts = [precondition]
+        for pair in assign.pairs:
+            left = Symbol(pair[0].symbol_name() + '_prime',
+                          pair[0].symbol_type())
+            conjuncts.append(Equals(left, pair[1]))
+        disjuncts.append(And(conjuncts))
+    return Or(disjuncts)
 
 
 def get_global_assigns_in_block(block: list[Statement], global_vars):
