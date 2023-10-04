@@ -1,6 +1,6 @@
-precondition: a == 0 && b == 0 && c == 0
+precondition: true
 postcondition: true
-globals: a b c
+globals:
 
 procedure T1() {
     a := 1;
@@ -15,4 +15,9 @@ procedure T2() {
 procedure T3() {
     c := 1;
     c := 2;
+}
+
+procedure T4() {
+    d := 1;
+    d := 2;
 }

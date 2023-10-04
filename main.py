@@ -110,7 +110,7 @@ def fixpoint_proof(proof: Proof):
                 (i >= len(proof.threads) or
                  is_valid(Implies(proof.specified_post, proof.generated_post))):
             return False
-    return True
+    return is_valid(Implies(proof.generated_post, proof.specified_post))
 
 
 def get_problem_post_nodes(proof: Proof):
