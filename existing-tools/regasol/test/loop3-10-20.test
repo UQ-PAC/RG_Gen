@@ -1,0 +1,29 @@
+variable x,y,z
+
+program prog1
+[x<=10]
+while x < 10 do
+ x:=x+1
+end-while
+end-program
+
+program prog2
+[y<=20]
+while y < 20 do
+ y:=y+1
+end-while
+end-program
+
+program prog3
+await x =10 && y = 20 do
+ z:=x+y
+end-await
+end-program
+
+precondition: [x=0&&y=0&&z=0]
+postcondition: [z=30]
+
+iterations: 10
+
+run: prog1, prog2, prog3
+mode:parallel

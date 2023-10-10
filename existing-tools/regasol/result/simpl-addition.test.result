@@ -1,0 +1,95 @@
+Number of iterations to be stable: 2
+Running time (in milliseconds): 25
+SAT calls: 22
+Combined postcondition: 
+   ((x=1||x=3)&&(x=2||x=3))
+Asserted Postcondition: 
+   x=3
+Combined postcondition implies the asserted postcondition
+--------------------------
+| End of iteration 1     |
+--------------------------
+==============================
+Proof: 
+[x=0]
+x:=x+1
+[x=1]
+==============================
+Unstable primitive assertion: x=0
+Location: [0]
+Unstable residue: x=2
+==============================
+Guarantee: 
+x=0 ---> x=1
+==============================
+Rely: 
+x=0 ---> x=2
+==============================
+-------------------------------
+==============================
+Proof: 
+[x=0]
+x:=x+2
+[x=2]
+==============================
+Unstable primitive assertion: x=0
+Location: [0]
+Unstable residue: x=1
+==============================
+Guarantee: 
+x=0 ---> x=2
+==============================
+Rely: 
+x=0 ---> x=1
+==============================
+-------------------------------
+
+++++++++++++++++++++++++++++++++++++
+
+--------------------------
+| End of iteration 2     |
+--------------------------
+==============================
+Proof: 
+[(x=0||x=2)]
+x:=x+1
+[(x=1||x=3)]
+==============================
+Unstable primitive assertion: None
+Location: None
+Unstable residue: None
+==============================
+Guarantee: 
+x=0 ---> x=1
+x=2 ---> x=3
+==============================
+Rely: 
+x=0 ---> x=2
+x=1 ---> x=3
+==============================
+-------------------------------
+==============================
+Proof: 
+[(x=0||x=1)]
+x:=x+2
+[(x=2||x=3)]
+==============================
+Unstable primitive assertion: None
+Location: None
+Unstable residue: None
+==============================
+Guarantee: 
+x=0 ---> x=2
+x=1 ---> x=3
+==============================
+Rely: 
+x=0 ---> x=1
+x=2 ---> x=3
+==============================
+-------------------------------
+
+++++++++++++++++++++++++++++++++++++
+
+Number of iterations to be stable: 2
+Running time (in milliseconds): 25
+SAT calls: 22

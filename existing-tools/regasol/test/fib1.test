@@ -1,0 +1,20 @@
+variable x,y
+
+program prog1
+x:= x + y
+end-program
+
+program prog2
+y := y + x
+end-program
+
+precondition: [x = 1 && y = 1]
+postcondition: [x <= 3 && y <= 3]
+
+iterations: 12
+
+mirror: prog2:prog1[x=y,y=x]
+
+run: prog1, prog2
+mode:advance
+

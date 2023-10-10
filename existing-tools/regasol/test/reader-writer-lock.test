@@ -1,0 +1,24 @@
+variable w, r, x, y
+
+program writer
+ await w = 0 && r = 0 do
+   w:=1
+ end-await
+ x:=3
+ w:=0
+end-program
+
+program reader 
+ await w = 0 do
+  r:=r + 1
+ end-await
+ y:=x
+ r:=r-1
+end-program
+
+
+precondition: [w = 0 && r = 0 && x = 1 && y = 0]
+postcondition: [y=1 || y = 3]
+iterations: 10
+run: writer, reader
+mode:parallel

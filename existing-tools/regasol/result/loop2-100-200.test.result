@@ -1,0 +1,115 @@
+Number of iterations to be stable: 2
+Running time (in milliseconds): 47
+SAT calls: 60
+Combined postcondition: 
+   ((x<=100&&!(x<100))&&(y<=200&&!(y<200)))
+Asserted Postcondition: 
+   (x=100&&y=200)
+Combined postcondition implies the asserted postcondition
+--------------------------
+| End of iteration 1     |
+--------------------------
+==============================
+Proof: 
+[(x=0&&y=0)]
+[x<=100]
+while x<100 do
+ [x<100]
+ x:=x+1
+ [x<101]
+ [x<=100]
+end-while
+[(x<=100&&!(x<100))]
+==============================
+Unstable primitive assertion: (x=0&&y=0)
+Location: [0]
+Unstable residue: (y<201&&x=0)
+==============================
+Guarantee: 
+x<100 ---> x<101
+==============================
+Rely: 
+y<200 ---> y<201
+==============================
+-------------------------------
+==============================
+Proof: 
+[(x=0&&y=0)]
+[y<=200]
+while y<200 do
+ [y<200]
+ y:=y+1
+ [y<201]
+ [y<=200]
+end-while
+[(y<=200&&!(y<200))]
+==============================
+Unstable primitive assertion: (x=0&&y=0)
+Location: [0]
+Unstable residue: (x<101&&y=0)
+==============================
+Guarantee: 
+y<200 ---> y<201
+==============================
+Rely: 
+x<100 ---> x<101
+==============================
+-------------------------------
+
+++++++++++++++++++++++++++++++++++++
+
+--------------------------
+| End of iteration 2     |
+--------------------------
+==============================
+Proof: 
+[((x=0&&y=0)||(y<201&&x=0))]
+[x<=100]
+while x<100 do
+ [x<100]
+ x:=x+1
+ [x<101]
+ [x<=100]
+end-while
+[(x<=100&&!(x<100))]
+==============================
+Unstable primitive assertion: None
+Location: None
+Unstable residue: None
+==============================
+Guarantee: 
+x<100 ---> x<101
+==============================
+Rely: 
+y<200 ---> y<201
+==============================
+-------------------------------
+==============================
+Proof: 
+[((x=0&&y=0)||(x<101&&y=0))]
+[y<=200]
+while y<200 do
+ [y<200]
+ y:=y+1
+ [y<201]
+ [y<=200]
+end-while
+[(y<=200&&!(y<200))]
+==============================
+Unstable primitive assertion: None
+Location: None
+Unstable residue: None
+==============================
+Guarantee: 
+y<200 ---> y<201
+==============================
+Rely: 
+x<100 ---> x<101
+==============================
+-------------------------------
+
+++++++++++++++++++++++++++++++++++++
+
+Number of iterations to be stable: 2
+Running time (in milliseconds): 47
+SAT calls: 60

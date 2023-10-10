@@ -1,0 +1,14 @@
+variable x
+
+program prog1
+x:=x+1
+end-program
+
+program prog2
+x:=x+2
+end-program
+
+precondition: [x=0]
+postcondition: [x=3]
+iterations: 10
+mode: advance

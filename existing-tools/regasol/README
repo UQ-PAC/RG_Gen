@@ -1,0 +1,6 @@
+1. To run an example, use the command: ./regasol.sh test/FILENAME
+where FILENAME is the name of the program.
+
+For example: ./regasol.sh test/fib1.test
+
+2. To run all programs except fib6.test, use: ./regasol_all.sh 

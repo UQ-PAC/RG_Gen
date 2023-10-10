@@ -1,0 +1,30 @@
+variable t1,t2,x
+,err
+program prog1
+t1:=t2+1
+while t1 >= t2 && t2 > 0 do
+ skip
+end-while
+x:=1
+x:=x-1
+t1:=0
+end-program
+
+program prog2
+t2:=t1+1
+while t2 >= t1 && t1 > 0 do
+ skip
+end-while
+x:=1
+x:=x-1
+t2:=0
+end-program
+
+precondition: [x = 0 && t1 = 0 && t2 = 0]
+postcondition: [x = 0]
+
+iterations: 10
+mirror: prog2:prog1[t1=t2,t2=t1]
+
+run: prog1,prog2
+mode:advance

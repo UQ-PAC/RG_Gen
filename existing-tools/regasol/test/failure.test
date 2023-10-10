@@ -1,0 +1,21 @@
+variable r,x,z
+
+program prog1
+r:=0
+if z=0 do
+ x:=0
+else
+ skip
+end-if
+x:=r
+end-program
+
+program prog2
+z:=0
+end-program
+
+precondition: [x=1&&z=1]
+postcondition: [x=0]
+iterations: 10
+run: prog1,prog2
+mode:advance

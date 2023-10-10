@@ -1,0 +1,29 @@
+variable x,y
+
+program prog1
+x:= x + y
+x:= x + y
+x:= x + y
+x:= x + y
+x:= x + y
+x:= x + y
+end-program
+
+program prog2
+y := y + x
+y := y + x
+y := y + x
+y := y + x
+y := y + x
+y := y + x
+end-program
+
+precondition: [x = 1 && y = 1]
+postcondition: [x <= 377 && y <= 377]
+
+iterations: 20
+
+mirror: prog2:prog1[x=y,y=x]
+
+run: prog1, prog2
+mode:advance

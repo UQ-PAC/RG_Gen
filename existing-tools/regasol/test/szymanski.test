@@ -1,0 +1,62 @@
+variable f1,f2,x
+
+program thrd1
+f1:=1
+await f2 < 3 do
+ skip
+end-await
+f1:=3
+if f2 =1 do
+ f1:=2
+ await f2 = 4 do
+  skip
+ end-await
+else
+ skip
+end-if
+f1:=4
+await f2 < 2 do
+ skip
+end-await
+x:=1
+a:=x
+await !(2 <= f2 && f2 <=3) do
+ skip
+end-await
+f1:=0
+end-program
+
+program thrd2
+f2:=1
+await f1 < 3 do
+ skip
+end-await
+f2:=3
+if f1 =1 do
+ f2:=2
+ await f1 = 4 do
+  skip
+ end-await
+else
+ skip
+end-if
+f2:=4
+await f1 < 2 do
+ skip
+end-await
+x:=2
+b:=x
+await !(2 <= f1 && f1 <=3) do
+ skip
+end-await
+f2:=0
+end-program
+
+
+
+precondition: [f1 = 0 && f2 = 0 && x = 0 && a= 0 && b =0]
+postcondition: [a = 1 && b = 2]
+iterations: 20
+run: thrd1,thrd2
+mode:parallel
+

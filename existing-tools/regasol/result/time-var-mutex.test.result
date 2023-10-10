@@ -1,0 +1,213 @@
+Number of iterations to be stable: 2
+Running time (in milliseconds): 101
+SAT calls: 111
+Combined postcondition: 
+   (((minode=0&&inode=1&&busy=1&&mbusy=0&&x=0)||(minode=0&&mbusy=1&&busy=1&&inode=1&&x=0))&&(((mbusy=0&&x=0&&inode=1&&busy=1&&minode=0)||(mbusy=0&&minode=1&&busy=1&&inode=1&&x=0))||(mbusy=0&&x=1&&inode=1&&busy=1&&minode=1)))
+Asserted Postcondition: 
+   x=0
+Combined postcondition implies the asserted postcondition
+--------------------------
+| End of iteration 1     |
+--------------------------
+==============================
+Proof: 
+[(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)]
+await minode=0 do
+ [(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)]
+ minode:=1
+end-await
+[(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)]
+if inode=0 do
+ [false]
+ await mbusy=0 do
+  [false]
+  mbusy:=1
+ end-await
+ [false]
+ busy:=1
+ [false]
+ mbusy:=0
+ [false]
+ inode:=1
+ [false]
+else
+ [(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)]
+ skip
+ [(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)]
+end-if
+[(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)]
+x:=1
+[(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1)]
+x:=x-1
+[(x=0&&minode=1&&mbusy=0&&busy=1&&inode=1)]
+minode:=0
+[(minode=0&&inode=1&&busy=1&&mbusy=0&&x=0)]
+==============================
+Unstable primitive assertion: (x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)
+Location: [0]
+Unstable residue: (mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)
+==============================
+Guarantee: 
+(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0) ---> (minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)
+(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0) ---> (x=1&&inode=1&&busy=1&&mbusy=0&&minode=1)
+(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1) ---> (x=0&&minode=1&&mbusy=0&&busy=1&&inode=1)
+(x=0&&minode=1&&mbusy=0&&busy=1&&inode=1) ---> (minode=0&&inode=1&&busy=1&&mbusy=0&&x=0)
+==============================
+Rely: 
+(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0) ---> (mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)
+(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0) ---> (mbusy=0&&x=0&&inode=1&&busy=1&&minode=0)
+==============================
+-------------------------------
+==============================
+Proof: 
+[(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)]
+await mbusy=0 do
+ [(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)]
+ mbusy:=1
+end-await
+[(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)]
+if busy=0 do
+ [false]
+ x:=1
+ [false]
+ x:=x-1
+ [false]
+else
+ [(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)]
+ skip
+ [(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)]
+end-if
+[(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)]
+mbusy:=0
+[(mbusy=0&&x=0&&inode=1&&busy=1&&minode=0)]
+==============================
+Unstable primitive assertion: (x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)
+Location: [0]
+Unstable residue: (minode=1&&mbusy=0&&busy=1&&inode=1&&x=0),(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1)
+==============================
+Guarantee: 
+(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0) ---> (mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)
+(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0) ---> (mbusy=0&&x=0&&inode=1&&busy=1&&minode=0)
+==============================
+Rely: 
+(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0) ---> (minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)
+(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0) ---> (x=1&&inode=1&&busy=1&&mbusy=0&&minode=1)
+(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1) ---> (x=0&&minode=1&&mbusy=0&&busy=1&&inode=1)
+(x=0&&minode=1&&mbusy=0&&busy=1&&inode=1) ---> (minode=0&&inode=1&&busy=1&&mbusy=0&&x=0)
+==============================
+-------------------------------
+
+++++++++++++++++++++++++++++++++++++
+
+--------------------------
+| End of iteration 2     |
+--------------------------
+==============================
+Proof: 
+[((x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)||(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0))]
+await minode=0 do
+ [((x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)||(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0))]
+ minode:=1
+end-await
+[((minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)||(minode=1&&x=0&&inode=1&&busy=1&&mbusy=1))]
+if inode=0 do
+ [false]
+ await mbusy=0 do
+  [false]
+  mbusy:=1
+ end-await
+ [false]
+ busy:=1
+ [false]
+ mbusy:=0
+ [false]
+ inode:=1
+ [false]
+else
+ [((minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)||(minode=1&&x=0&&inode=1&&busy=1&&mbusy=1))]
+ skip
+ [((minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)||(minode=1&&x=0&&inode=1&&busy=1&&mbusy=1))]
+end-if
+[((minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)||(minode=1&&x=0&&inode=1&&busy=1&&mbusy=1))]
+x:=1
+[((x=1&&inode=1&&busy=1&&mbusy=0&&minode=1)||(x=1&&mbusy=1&&busy=1&&inode=1&&minode=1))]
+x:=x-1
+[((x=0&&minode=1&&mbusy=0&&busy=1&&inode=1)||(x=0&&minode=1&&inode=1&&busy=1&&mbusy=1))]
+minode:=0
+[((minode=0&&inode=1&&busy=1&&mbusy=0&&x=0)||(minode=0&&mbusy=1&&busy=1&&inode=1&&x=0))]
+==============================
+Unstable primitive assertion: None
+Location: None
+Unstable residue: None
+==============================
+Guarantee: 
+(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0) ---> (minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)
+(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0) ---> (x=1&&inode=1&&busy=1&&mbusy=0&&minode=1)
+(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1) ---> (x=0&&minode=1&&mbusy=0&&busy=1&&inode=1)
+(x=0&&minode=1&&mbusy=0&&busy=1&&inode=1) ---> (minode=0&&inode=1&&busy=1&&mbusy=0&&x=0)
+(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0) ---> (minode=1&&x=0&&inode=1&&busy=1&&mbusy=1)
+(minode=1&&x=0&&inode=1&&busy=1&&mbusy=1) ---> (x=1&&mbusy=1&&busy=1&&inode=1&&minode=1)
+(x=1&&mbusy=1&&busy=1&&inode=1&&minode=1) ---> (x=0&&minode=1&&inode=1&&busy=1&&mbusy=1)
+(x=0&&minode=1&&inode=1&&busy=1&&mbusy=1) ---> (minode=0&&mbusy=1&&busy=1&&inode=1&&x=0)
+==============================
+Rely: 
+(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0) ---> (mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)
+(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0) ---> (mbusy=0&&x=0&&inode=1&&busy=1&&minode=0)
+(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0) ---> (mbusy=1&&x=0&&inode=1&&busy=1&&minode=1)
+(mbusy=1&&x=0&&inode=1&&busy=1&&minode=1) ---> (mbusy=0&&minode=1&&busy=1&&inode=1&&x=0)
+(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1) ---> (mbusy=1&&minode=1&&busy=1&&inode=1&&x=1)
+(mbusy=1&&minode=1&&busy=1&&inode=1&&x=1) ---> (mbusy=0&&x=1&&inode=1&&busy=1&&minode=1)
+==============================
+-------------------------------
+==============================
+Proof: 
+[(((x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)||(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0))||(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1))]
+await mbusy=0 do
+ [(((x=0&&inode=1&&busy=1&&minode=0&&mbusy=0)||(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0))||(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1))]
+ mbusy:=1
+end-await
+[(((mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)||(mbusy=1&&x=0&&inode=1&&busy=1&&minode=1))||(mbusy=1&&minode=1&&busy=1&&inode=1&&x=1))]
+if busy=0 do
+ [false]
+ x:=1
+ [false]
+ x:=x-1
+ [false]
+else
+ [(((mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)||(mbusy=1&&x=0&&inode=1&&busy=1&&minode=1))||(mbusy=1&&minode=1&&busy=1&&inode=1&&x=1))]
+ skip
+ [(((mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)||(mbusy=1&&x=0&&inode=1&&busy=1&&minode=1))||(mbusy=1&&minode=1&&busy=1&&inode=1&&x=1))]
+end-if
+[(((mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)||(mbusy=1&&x=0&&inode=1&&busy=1&&minode=1))||(mbusy=1&&minode=1&&busy=1&&inode=1&&x=1))]
+mbusy:=0
+[(((mbusy=0&&x=0&&inode=1&&busy=1&&minode=0)||(mbusy=0&&minode=1&&busy=1&&inode=1&&x=0))||(mbusy=0&&x=1&&inode=1&&busy=1&&minode=1))]
+==============================
+Unstable primitive assertion: None
+Location: None
+Unstable residue: None
+==============================
+Guarantee: 
+(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0) ---> (mbusy=1&&minode=0&&busy=1&&inode=1&&x=0)
+(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0) ---> (mbusy=0&&x=0&&inode=1&&busy=1&&minode=0)
+(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0) ---> (mbusy=1&&x=0&&inode=1&&busy=1&&minode=1)
+(mbusy=1&&x=0&&inode=1&&busy=1&&minode=1) ---> (mbusy=0&&minode=1&&busy=1&&inode=1&&x=0)
+(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1) ---> (mbusy=1&&minode=1&&busy=1&&inode=1&&x=1)
+(mbusy=1&&minode=1&&busy=1&&inode=1&&x=1) ---> (mbusy=0&&x=1&&inode=1&&busy=1&&minode=1)
+==============================
+Rely: 
+(x=0&&inode=1&&busy=1&&minode=0&&mbusy=0) ---> (minode=1&&mbusy=0&&busy=1&&inode=1&&x=0)
+(minode=1&&mbusy=0&&busy=1&&inode=1&&x=0) ---> (x=1&&inode=1&&busy=1&&mbusy=0&&minode=1)
+(x=1&&inode=1&&busy=1&&mbusy=0&&minode=1) ---> (x=0&&minode=1&&mbusy=0&&busy=1&&inode=1)
+(x=0&&minode=1&&mbusy=0&&busy=1&&inode=1) ---> (minode=0&&inode=1&&busy=1&&mbusy=0&&x=0)
+(mbusy=1&&minode=0&&busy=1&&inode=1&&x=0) ---> (minode=1&&x=0&&inode=1&&busy=1&&mbusy=1)
+(minode=1&&x=0&&inode=1&&busy=1&&mbusy=1) ---> (x=1&&mbusy=1&&busy=1&&inode=1&&minode=1)
+(x=1&&mbusy=1&&busy=1&&inode=1&&minode=1) ---> (x=0&&minode=1&&inode=1&&busy=1&&mbusy=1)
+(x=0&&minode=1&&inode=1&&busy=1&&mbusy=1) ---> (minode=0&&mbusy=1&&busy=1&&inode=1&&x=0)
+==============================
+-------------------------------
+
+++++++++++++++++++++++++++++++++++++
+
+Number of iterations to be stable: 2
+Running time (in milliseconds): 101
+SAT calls: 111

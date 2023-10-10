@@ -1,0 +1,20 @@
+variable x
+
+program prog1
+[x <= 100]
+while x < 100 do
+ x:=x+1
+end-while
+end-program
+
+program prog2
+x:=20
+end-program
+
+precondition: [x = 0]
+postcondition: [x = 100 || x = 20]
+
+iterations: 10
+
+run: prog1, prog2
+mode:parallel

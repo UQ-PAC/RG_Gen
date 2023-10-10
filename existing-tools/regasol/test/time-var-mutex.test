@@ -1,0 +1,39 @@
+variable inode,busy,minode,mbusy,x
+
+program thr1
+await minode = 0 do
+ minode:=1
+end-await
+if inode = 0 do
+ await mbusy = 0 do
+  mbusy:=1
+ end-await
+ busy:=1
+ mbusy:=0
+ inode:=1
+else
+ skip
+end-if
+x:=1
+x:=x-1
+minode:=0
+end-program
+
+program thr2
+await mbusy = 0 do
+ mbusy:=1
+end-await
+if busy=0 do
+x:=1
+x:=x-1
+else
+ skip
+end-if
+mbusy:=0
+end-program
+
+precondition: [x=0 && inode = 1 && busy = 1 && minode = 0 && mbusy = 0]
+postcondition: [x=0]
+iterations: 10
+run thr1,thr2
+mode:parallel

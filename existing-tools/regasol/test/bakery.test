@@ -1,0 +1,40 @@
+variable c1,c2,n1,n2,x
+
+program prog1
+c1:=1
+n1:= n2 + 1
+c1:=0
+while c2 >= 1 do
+ skip
+end-while
+while n1 >= n2 && n2 > 0 do
+ skip
+end-while
+x:=1
+x:=x-1
+n1:=0
+end-program
+
+program prog2
+c2:= 1
+n2:= n1 + 1
+c2:=0
+while c1 >= 1 do
+ skip
+end-while
+while n2 >= n1 && n1 > 0 do
+ skip
+end-while
+x:=1
+x:=x-1
+n2:=0
+end-program
+
+precondition: [x=0 && c1 = 0 && c2 = 0 &&n1 = 0 && n2 = 0]
+postcondition: [x=0]
+
+iterations: 10
+mirror: prog2:prog1[c1=c2,c2=c1,n1=n2,n2=n1]
+
+run: prog1,prog2
+mode:advance
