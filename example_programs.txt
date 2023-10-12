@@ -1,0 +1,207 @@
+Example Programs
+
+I've created a series of standardised tests that aim to demonstrate the
+strengths and weaknesses of certain techniques. Each test begins with:
+file: <filename>
+desc: <short description of the test and what it aims to demonstrate>
+properties: <list of 'property=bool'> where property is one of:
+    mutual_post: Whether the postcondition for the program cannot be represented
+                 as local assertions. If mutual_post=false, both the global
+                 postcondition and local assertions will be included.
+    local_vars:  Whether the program contains local variables.
+    aux_vars:    Whether verifying the program requires introducing an auxiliary
+                 variable, such as a global assignment.
+    loops:       Whether the program contains loops.
+Other notes:
+- Test programs do not currently contain function/procedure calls.
+- All variables are assumed to be ints.
+
+================================================================================
+================================================================================
+
+file: basic_increment.txt
+desc: An extremely bare-bones example, mostly used for testing whether the tool
+      is compiling and running correctly.
+properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
+globals: [x]
+{x == 0}
+T1():
+	x = x + 1
+T2():
+	x = 1
+{x == 1 || x == 2}
+
+================================================================================
+
+file: uneven_increment.txt
+desc: Incrementing x in both threads may require more iterations than
+      basic_increment.txt.
+properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
+globals: [x]
+{x == 0}
+T1():
+	x = x + 1
+T2():
+	x = x + 2
+{x == 3}
+
+================================================================================
+
+file: mutual_increment.txt
+desc: This deceivingly-simple program requires an auxiliary variable to verify!
+properties: mutual_post=true, local_vars=false, aux_vars=true, loops=false
+globals: [x]
+{x == 0}
+T1():
+    x = x + 1
+T2():
+    x = x + 1
+{x == 2}
+
+================================================================================
+
+file: local_assertions.txt
+desc: A simple program with no interference and some local assert statements.
+      Contains some linear arithmetic.
+properties: mutual_post=false, local_vars=false, aux_vars=false, loops=false
+globals: []
+{true}
+T1():
+    v1 = 12
+    v2 = 3 * v1
+    assert v2 == 36
+T2():
+    u1 = 16
+    u2 = 2 * 4 * 8 * u1
+    assert u2 == 1024
+{v2 == 36 && u2 == 1024}
+
+================================================================================
+
+file: branching_increments.txt
+desc: Extends mutual_increment.txt with some conditional statements. Note that
+      the postcondition holds regardless of the execution path. Adding an
+      auxiliary variable to the second thread suffices to verify the program.
+properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
+globals: [x, y, z]
+{x == 0 && y == 0}
+T1():
+    if z == 0:
+        x = x + 1
+    else:
+        y = y + 1
+    if z == 0:
+        x = x + 1
+    else:
+        y = y + 1
+    y = y + x
+T2():
+    y = y + 1
+{y == 3}
+
+================================================================================
+
+file: petersons_basic.txt
+desc: The simple two-thread version of Peterson's mutual-exclusion algorithm.
+      Includes some local variables for compatibility with both mutual and
+      non-mutual specifications. The loop invariant can be straightforwardly
+      derived from the strongest stable postcondition of the 'turn' assignment.
+properties: mutual_post=false, local_vars=true, aux_vars=false, loops=true
+globals: [flag1, flag2, turn, x]
+{flag1 == 0 && flag2 == 0}
+T1():
+    flag1 = 1
+    turn = 1
+    while flag2 == 1 && turn == 1:
+        invariant flag1 == 1 && 0 <= turn <= 1
+        skip
+    x = 0
+    a = x
+    assert a == 0
+    flag1 = 0
+T2():
+    flag2 = 1
+    turn = 0
+    while flag1 == 1 && turn == 0:
+        invariant flag2 == 1 && 0 <= turn <= 1
+        skip
+    x = 1
+    b = x
+    assert b == 1
+    flag2 = 0
+{a == 0 && b == 1}
+
+================================================================================
+
+file: redundant_interference.txt
+desc: Strongest-proof techniques hate this simple example.
+properties: mutual_post=false, local_vars=false, aux_vars=false, loops=false
+globals: [w, x, y, z]
+{w == y == x == z == 0}
+T1():
+    w = 1
+    w = 2
+    w = 3
+    w = 4
+    assert true
+T2():
+    x = 1
+    x = 2
+    x = 3
+    x = 4
+    assert true
+T3():
+    y = 1
+    y = 2
+    y = 3
+    y = 4
+    assert true
+T4():
+    z = 1
+    z = 2
+    z = 3
+    z = 4
+    assert true
+{true}
+
+================================================================================
+
+file: conditional_lock.txt
+desc: A basic conditional-based locking scheme.
+properties: mutual_post=false, local_vars=true, aux_vars=false, loops=false
+globals: [x, z]
+{true}
+T1():
+    r = 0
+    if z == 0:
+        x = 0
+        r = x
+    assert r == 0
+T2():
+    assume z == 1
+    x = 1
+    z = 0
+{r == 0}
+
+================================================================================
+
+file: conditional_lock_advanced.txt
+desc: An extension of conditional_lock.txt that requires auxiliary variables.
+properties: mutual_post=false, local_vars=true, aux_vars=true, loops=false
+globals: [x, z]
+{true}
+T1():
+    r = 0
+    if z == 0:
+        x = 0
+        r = x
+    assert r == 0
+T2():
+    if z == 1:
+        x = 1
+    z = 1
+{r == 0}
+
+================================================================================
+================================================================================
+
