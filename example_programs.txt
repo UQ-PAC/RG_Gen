@@ -203,5 +203,20 @@ T2():
 {r == 0}
 
 ================================================================================
-================================================================================
 
+file: regasol_fail.txt
+desc: ReGaSol fails to verify this trivial program, due to the omission of
+      variable r from the precondition. The reason is still being investigated.
+properties: mutual_post=false, local_vars=true, aux_vars=false, loops=false
+globals: [x, z]
+{x == 1 && z == 1}
+T1():
+    r = 0
+    if z == 0:
+        x = 0
+    x = r
+T2():
+    z = 0
+{x == 0}
+
+================================================================================
