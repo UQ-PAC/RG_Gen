@@ -34,6 +34,25 @@ Other notes:
 ================================================================================
 ================================================================================
 
+This table displays the properties of each test, where 'X'=true and '-'=false.
+Each property represents a constraint, and hence tests with more 'X's are more
+difficult in general.
+
+NAME                        MUTUAL_POST LOCAL_VARS  AUX_VARS    LOOPS
+basic_increment             X           -           -           -
+uneven_increment            X           -           -           -
+mutual_increment            X           -           X           -
+local_assertions            -           -           -           -
+branching_increments        X           -           -           -
+petersons_basic             -           X           -           X
+redundant_interference      -           -           -           -
+conditional_lock            -           X           -           -
+conditional_lock_advanced   -           X           X           -
+regasol_fail                -           X           -           -
+
+================================================================================
+================================================================================
+
 test: basic_increment
 desc: An extremely bare-bones example, mostly used for testing whether the tool
       is compiling and running correctly.
@@ -235,3 +254,5 @@ T2():
 {x == 0}
 
 ================================================================================
+
+
