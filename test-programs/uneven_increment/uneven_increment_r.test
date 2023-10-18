@@ -1,0 +1,15 @@
+variable x
+
+program T1
+x := x + 1
+end-program
+
+program T2
+x := x + 2
+end-program
+
+precondition: [x = 0]
+postcondition: [x = 3]
+iterations: 10
+run: T1, T2
+mode: advance

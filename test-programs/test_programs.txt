@@ -1,8 +1,18 @@
 Example Programs
 
-I've created a series of standardised tests that aim to demonstrate the
-strengths and weaknesses of certain techniques. Each test begins with:
-file: <filename>
+In this directory, I've created a series of standardised tests that aim to
+demonstrate the strengths and weaknesses of certain techniques. This file is a
+"master reference" that contains all tests in the directory, presented in Python
+syntax.
+
+Each folder in this directory represents the test of the same name in this file.
+Each of these test folders should contain the following files:
+    <test_name>_r.test: ReGaSol format.
+    <test_name>_t.c:    Threader format.
+    <test_name>_n.txt:  Novel-prototype format.
+
+Each test begins with:
+test: <test_name>
 desc: <short description of the test and what it aims to demonstrate>
 properties: <list of 'property=bool'> where property is one of:
     mutual_post: Whether the postcondition for the program cannot be represented
@@ -10,16 +20,21 @@ properties: <list of 'property=bool'> where property is one of:
                  postcondition and local assertions will be included.
     local_vars:  Whether the program contains local variables.
     aux_vars:    Whether verifying the program requires introducing an auxiliary
-                 variable, such as a global assignment.
+                 variable, such as a global assignment. The auxiliary variables
+                 required are described in `desc`.
     loops:       Whether the program contains loops.
 Other notes:
 - Test programs do not currently contain function/procedure calls.
 - All variables are assumed to be ints.
+- Loop invariants are omitted from test files as they are expected to be
+  generated.
+- Local assertions are omitted from test files for techniques that can verify
+  mutual postconditions.
 
 ================================================================================
 ================================================================================
 
-file: basic_increment.txt
+test: basic_increment
 desc: An extremely bare-bones example, mostly used for testing whether the tool
       is compiling and running correctly.
 properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
@@ -33,9 +48,9 @@ T2():
 
 ================================================================================
 
-file: uneven_increment.txt
+test: uneven_increment
 desc: Incrementing x in both threads may require more iterations than
-      basic_increment.txt.
+      basic_increment.
 properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
 globals: [x]
 {x == 0}
@@ -47,7 +62,7 @@ T2():
 
 ================================================================================
 
-file: mutual_increment.txt
+test: mutual_increment
 desc: This deceivingly-simple program requires an auxiliary variable to verify!
 properties: mutual_post=true, local_vars=false, aux_vars=true, loops=false
 globals: [x]
@@ -60,7 +75,7 @@ T2():
 
 ================================================================================
 
-file: local_assertions.txt
+test: local_assertions
 desc: A simple program with no interference and some local assert statements.
       Contains some linear arithmetic.
 properties: mutual_post=false, local_vars=false, aux_vars=false, loops=false
@@ -78,10 +93,10 @@ T2():
 
 ================================================================================
 
-file: branching_increments.txt
-desc: Extends mutual_increment.txt with some conditional statements. Note that
-      the postcondition holds regardless of the execution path. Adding an
-      auxiliary variable to the second thread suffices to verify the program.
+test: branching_increments
+desc: Extends mutual_increment with some conditional statements. Note that the
+      postcondition holds regardless of the execution path. Adding an auxiliary
+      variable to the second thread suffices to verify the program.
 properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
 globals: [x, y, z]
 {x == 0 && y == 0}
@@ -101,7 +116,7 @@ T2():
 
 ================================================================================
 
-file: petersons_basic.txt
+test: petersons_basic
 desc: The simple two-thread version of Peterson's mutual-exclusion algorithm.
       Includes some local variables for compatibility with both mutual and
       non-mutual specifications. The loop invariant can be straightforwardly
@@ -133,7 +148,7 @@ T2():
 
 ================================================================================
 
-file: redundant_interference.txt
+test: redundant_interference
 desc: Strongest-proof techniques hate this simple example.
 properties: mutual_post=false, local_vars=false, aux_vars=false, loops=false
 globals: [w, x, y, z]
@@ -166,7 +181,7 @@ T4():
 
 ================================================================================
 
-file: conditional_lock.txt
+test: conditional_lock
 desc: A basic conditional-based locking scheme.
 properties: mutual_post=false, local_vars=true, aux_vars=false, loops=false
 globals: [x, z]
@@ -178,15 +193,15 @@ T1():
         r = x
     assert r == 0
 T2():
-    assume z == 1
-    x = 1
-    z = 0
+    if z == 1:
+        x = 1
+        z = 0
 {r == 0}
 
 ================================================================================
 
-file: conditional_lock_advanced.txt
-desc: An extension of conditional_lock.txt that requires auxiliary variables.
+test: conditional_lock_advanced
+desc: An extension of conditional_lock that requires auxiliary variables.
 properties: mutual_post=false, local_vars=true, aux_vars=true, loops=false
 globals: [x, z]
 {true}
@@ -204,7 +219,7 @@ T2():
 
 ================================================================================
 
-file: regasol_fail.txt
+test: regasol_fail
 desc: ReGaSol fails to verify this trivial program, due to the omission of
       variable r from the precondition. The reason is still being investigated.
 properties: mutual_post=false, local_vars=true, aux_vars=false, loops=false

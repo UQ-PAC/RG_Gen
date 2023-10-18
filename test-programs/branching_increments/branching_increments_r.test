@@ -1,0 +1,25 @@
+variable x, y, z
+
+program T1
+if z = 0 do
+	x := x + 1
+else
+	y := y + 1
+end-if
+if z = 0 do
+	x := x + 1
+else
+	y := y + 1
+end-if
+y := y + x
+end-program
+
+program T2
+y := y + 1
+end-program
+
+precondition: [x = 0 && y = 0]
+postcondition: [y = 3]
+iterations: 10
+run: T1, T2
+mode: advance

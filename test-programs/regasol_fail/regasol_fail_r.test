@@ -1,0 +1,21 @@
+variable x, z, r
+
+program T1
+r := 0
+if z = 0 do
+    x := 0
+else
+    skip
+end-if
+x := r
+end-program
+
+program T2
+z := 0
+end-program
+
+precondition: [x = 1 && z = 1]
+postcondition: [x = 0]
+iterations: 10
+run: T1, T2
+mode: advance

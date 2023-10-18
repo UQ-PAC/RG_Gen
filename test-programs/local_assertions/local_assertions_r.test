@@ -1,0 +1,17 @@
+variable v1, v2, u1, u2
+
+program T1
+v1 := 12
+v2 := 3 * v1
+end-program
+
+program T2
+u1 := 16
+u2 := 2 * 4 * 8 * u1
+end-program
+
+precondition: [true]
+postcondition: [v2 = 36 && u2 = 1024]
+iterations: 10
+run: T1, T2
+mode: advance
