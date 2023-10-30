@@ -2,10 +2,10 @@ Example Programs
 
 In this directory, I've created a series of standardised tests that aim to
 demonstrate the strengths and weaknesses of certain techniques. This file is a
-"master reference" that contains all tests in the directory, presented in Python
-syntax.
+"master reference" that contains all tests in the directory, presented in a
+somewhat-similar syntax to Python.
 
-Each folder in this directory represents the test of the same name in this file.
+Each folder in this directory contains the test of the same name in this file.
 Each of these test folders should contain the following files:
     <test_name>_r.test: ReGaSol format.
     <test_name>_t.c:    Threader format.
@@ -15,71 +15,116 @@ Each test begins with:
 test: <test_name>
 desc: <short description of the test and what it aims to demonstrate>
 properties: <list of 'property=bool'> where property is one of:
-    mutual_post: Whether the postcondition for the program cannot be represented
-                 as local assertions. If mutual_post=false, both the global
-                 postcondition and local assertions will be included.
+    mutual_post: Whether the postcondition for the program cannot be
+                 represented as local assertions. If mutual_post=false, both
+                 the global postcondition and local assertions are included.
     local_vars:  Whether the program contains local variables.
-    aux_vars:    Whether verifying the program requires introducing an auxiliary
-                 variable, such as a global assignment. The auxiliary variables
-                 required are described in `desc`.
+    aux_vars:    Whether verifying the program requires introducing an
+                 auxiliary variable, such as a global assignment. The
+                 auxiliary variables required are described in `desc`.
     loops:       Whether the program contains loops.
 Other notes:
 - Test programs do not currently contain function/procedure calls.
-- All variables are assumed to be ints.
+- Only partial correctness is tested. Hence, some tests may not terminate or
+  be free from deadlock.
+- All variables are assumed to be (signed 32-bit) integers.
 - Loop invariants are omitted from test files as they are expected to be
   generated.
 - Local assertions are omitted from test files for techniques that can verify
   mutual postconditions.
+- mutual_post ==> aux_vars. If the postcondition for a program cannot be
+  specified with (auxiliary-variable-free) local assertions, then the
+  local postconditions generated for the proof must contain auxiliary
+  variables and hence verification requires auxiliary variables.
 
-================================================================================
-================================================================================
+===============================================================================
+===============================================================================
 
 This table displays the properties of each test, where 'X'=true and '-'=false.
 Each property represents a constraint, and hence tests with more 'X's are more
 difficult in general.
 
 NAME                        MUTUAL_POST LOCAL_VARS  AUX_VARS    LOOPS
-basic_increment             X           -           -           -
-uneven_increment            X           -           -           -
+basic_increment             -           -           -           -
+uneven_increment            -           -           -           -
 mutual_increment            X           -           X           -
 local_assertions            -           -           -           -
-branching_increments        X           -           -           -
+branching_increments        X           -           X           -
 petersons_basic             -           X           -           X
 redundant_interference      -           -           -           -
 conditional_lock            -           X           -           -
 conditional_lock_advanced   -           X           X           -
 regasol_fail                -           X           -           -
+large_loops                 -           -           -           X
+easy_loop_1                 -           -           -           X
+easy_loop_2                 -           -           -           X
+difficult_loop              -           X           -           X
+seqlock                     -           X           -           X
+keep_locals_local           -           X           -           -
+mutual_increment_local      -           -           X           -
 
-================================================================================
-================================================================================
+===============================================================================
+===============================================================================
+
+TODOs
+
+The following examples are yet to be added to the test-programs directory:
+- large_loops
+- easy_loop_1
+- easy_loop_2
+- difficult_loop
+- seqlock
+- keep_locals_local
+- mutual_increment_local
+
+The following tools are yet to have test files produced for them:
+- novel-prototype
+- threader
+- horn-ice
+- batman
+- concurinterproc
+- astreea
+
+The following tools are yet to be added to the existing-tools directory:
+- horn-ice
+- batman
+- concurinterproc
+- astreea
+
+===============================================================================
+===============================================================================
 
 test: basic_increment
 desc: An extremely bare-bones example, mostly used for testing whether the tool
       is compiling and running correctly.
-properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
+properties: mutual_post=false, local_vars=false, aux_vars=false, loops=false
 globals: [x]
 {x == 0}
 T1():
 	x = x + 1
+    assert x == 1
 T2():
 	x = 1
+    assert x == 1 || x == 2
 {x == 1 || x == 2}
 
-================================================================================
+===============================================================================
 
 test: uneven_increment
 desc: Incrementing x in both threads may require more iterations than
       basic_increment.
-properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
+properties: mutual_post=false, local_vars=false, aux_vars=false, loops=false
 globals: [x]
 {x == 0}
 T1():
 	x = x + 1
+    assert x == 1 || x == 3
 T2():
 	x = x + 2
+    assert x == 2 || x == 3
 {x == 3}
 
-================================================================================
+===============================================================================
 
 test: mutual_increment
 desc: This deceivingly-simple program requires an auxiliary variable to verify!
@@ -92,7 +137,7 @@ T2():
     x = x + 1
 {x == 2}
 
-================================================================================
+===============================================================================
 
 test: local_assertions
 desc: A simple program with no interference and some local assert statements.
@@ -110,13 +155,13 @@ T2():
     assert u2 == 1024
 {v2 == 36 && u2 == 1024}
 
-================================================================================
+===============================================================================
 
 test: branching_increments
 desc: Extends mutual_increment with some conditional statements. Note that the
       postcondition holds regardless of the execution path. Adding an auxiliary
       variable to the second thread suffices to verify the program.
-properties: mutual_post=true, local_vars=false, aux_vars=false, loops=false
+properties: mutual_post=true, local_vars=false, aux_vars=true, loops=false
 globals: [x, y, z]
 {x == 0 && y == 0}
 T1():
@@ -130,10 +175,10 @@ T1():
         y = y + 1
     y = y + x
 T2():
-    y = y + 1
-{y == 3}
+    y = y + 2
+{y == 4}
 
-================================================================================
+===============================================================================
 
 test: petersons_basic
 desc: The simple two-thread version of Peterson's mutual-exclusion algorithm.
@@ -165,7 +210,7 @@ T2():
     flag2 = 0
 {a == 0 && b == 1}
 
-================================================================================
+===============================================================================
 
 test: redundant_interference
 desc: Strongest-proof techniques hate this simple example.
@@ -198,7 +243,7 @@ T4():
     assert true
 {true}
 
-================================================================================
+===============================================================================
 
 test: conditional_lock
 desc: A basic conditional-based locking scheme.
@@ -217,7 +262,7 @@ T2():
         z = 0
 {r == 0}
 
-================================================================================
+===============================================================================
 
 test: conditional_lock_advanced
 desc: An extension of conditional_lock that requires auxiliary variables.
@@ -236,7 +281,7 @@ T2():
     z = 1
 {r == 0}
 
-================================================================================
+===============================================================================
 
 test: regasol_fail
 desc: ReGaSol fails to verify this trivial program, due to the omission of
@@ -253,6 +298,146 @@ T2():
     z = 0
 {x == 0}
 
-================================================================================
+===============================================================================
 
+test: large_loops
+desc: Unfolding these loops may be problematic!
+properties: mutual_post=false, local_vars=false, aux_vars=false, loops=true
+globals: [x, y]
+{x == 0 && y == 0}
+T1():
+    while x < 2147483647:
+        invariant x <= 2147483647
+        x = x + 1
+    assert x == 2147483647
+T2():
+    while y < 2147483647:
+        invariant y <= 2147483647
+        y = y + 1
+    assert y == 2147483647
+{x == 2147483647 && y == 2147483647}
 
+===============================================================================
+
+test: easy_loop_1
+desc: Generating this loop invariant is easy, but not completely trivial.
+properties: mutual_post=false, local_vars=false, aux_vars=false, loops=true
+globals: [x, y]
+{x == 0 && y == 0}
+T1():
+    while x < 5:
+        invariant x <= 5
+        x = x + 1
+    assert x == 5
+T2():
+    y = 1
+    assert y == 1
+{x == 5 && y == 1}
+
+===============================================================================
+
+test: easy_loop_2
+desc: Just like easy_loop_1, but with a few more loop iterations.
+properties: mutual_post=false, local_vars=false, aux_vars=false, loops=true
+globals: [x, y]
+{x == 0 && y == 0}
+T1():
+    while x < 4000:
+        invariant x <= 4000
+        x = x + 1
+    assert x == 4000
+T2():
+    y = 1
+    assert y == 1
+{x == 4000 && y == 1}
+
+===============================================================================
+
+test: difficult_loop
+desc: Termination of the loop requires y == 1. Very tricky.
+properties: mutual_post=false, local_vars=true, aux_vars=false, loops=true
+globals: [x, y]
+{x == 0 && y == 0}
+T1():
+    while x < 200:
+        invariant x <= 200 && (y == 0 || y == 1) && (x == 200 ==> y == 1)
+        x = x + y
+    r = y
+    assert r == 1
+T2():
+    y = 1
+{r == 1}
+
+===============================================================================
+
+test: seqlock
+desc: Sequence lock: see https://ieeexplore.ieee.org/abstract/document/9505223.
+      A proof can be found in test-programs/seqlock/proof.txt.
+properties: mutual_post=false, local_vars=true, aux_vars=false, loops=true
+globals: [x, z]
+{x == 0 && z == 0}
+T1():
+    z = z + 1
+    x = 1
+    x = 0
+    z = z + 1
+T2():
+    r1 = z
+    while r1 % 2 != 0:
+        invariant r1 <= z && (z % 2 == 0 ==> x != 1)
+        r1 = z
+    r2 = x
+    while z != r1:
+        invariant r1 <= z && (z % 2 == 0 ==> x != 1) && (z == r1 ==> r2 != 1)
+        r1 = z
+        while r1 % 2 != 0:
+            invariant r1 <= z && (z % 2 == 0 ==> x != 1)
+            r1 = z
+        r2 = x
+    assert r2 != 1
+{r2 != 1}
+
+===============================================================================
+
+test: keep_locals_local
+desc: This example punishes strongest-proof algorithms that treat local
+      variables as global.
+properties: mutual_post=false, local_vars=true, aux_vars=false, loops=false
+globals: [x]
+{x == 0}
+T1():
+    a = 0
+    a = 1
+    a = 2
+    x = 1
+T2():
+    b = 0
+    b = 1
+    b = 2
+    x = 1
+T3():
+    c = 0
+    c = 1
+    c = 2
+    x = 1
+{true}
+
+===============================================================================
+
+test: mutual_increment_local
+desc: I once conjectured that, for any straight-line program with
+      mutual_post=false, the only auxiliary state required to be conjoined to
+      assertions would be of the form 'pc_i > x', where 'pc_i' is the program
+      counter of thread i, and 'x' is some natural number. This is a
+      counterexample of that conjecture.
+properties: mutual_post=false, local_vars=false, aux_vars=true, loops=false
+globals: [x, z]
+{x == 0}
+T1():
+    x = x + 1
+    z = 2
+    assert z == 2
+T2():
+    x = x + 1
+    z = x
+{z == 2}
