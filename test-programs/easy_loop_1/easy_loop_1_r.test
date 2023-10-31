@@ -1,0 +1,17 @@
+variable x, y
+
+program T1
+while x < 5 do
+    x := x + 1
+end-while
+end-program
+
+program T2
+y := 1
+end-program
+
+precondition: [x = 0 && y = 0]
+postcondition: [x = 5 && y = 1]
+iterations: 10
+run: T1, T2
+mode: advance

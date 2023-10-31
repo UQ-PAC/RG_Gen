@@ -1,0 +1,19 @@
+variable x, y
+
+program T1
+while x < 2147483647 do
+    x := x + 1
+end-while
+end-program
+
+program T1
+while y < 2147483647 do
+    y := y + 1
+end-while
+end-program
+
+precondition: [x = 0 && y = 0]
+postcondition: [x = 2147483647 && y = 2147483647]
+iterations: 10
+run: T1, T2
+mode: advance

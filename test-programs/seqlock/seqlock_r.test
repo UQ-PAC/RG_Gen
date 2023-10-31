@@ -1,0 +1,29 @@
+variable x, z, r1, r2
+
+program T1
+z := z + 1
+x := 1
+x := 0
+z := z + 1
+end-program
+
+program T2
+r1 := z
+while r1 % 2 != 0 do
+    r1 := z
+end-while
+r2 := x
+while z != r1 do
+    r1 := z
+    while r1 % 2 != 0 do
+        r1 := z
+    end-while
+    r2 := x
+end-while
+end-program
+
+precondition: [x = 0 && z = 0]
+postcondition: [r2 != 1]
+iterations: 10
+run: T1, T2
+mode: advance
