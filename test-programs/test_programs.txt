@@ -7,9 +7,13 @@ somewhat-similar syntax to Python.
 
 Each folder in this directory contains the test of the same name in this file.
 Each of these test folders should contain the following files:
-    <test_name>_r.test: ReGaSol format.
-    <test_name>_t.c:    Threader format.
-    <test_name>_n.txt:  Novel-prototype format.
+    <test_name>_h_rg.bpl    Horn-ICE format, Rely-Guarantee encoding.
+    <test_name>_h_og.bpl    Horn-ICE format, Owicki-Gries encoding.
+    <test_name>_r.test:     ReGaSol format.
+    <test_name>_t.c:        Threader format.
+    <test_name>_n.txt:      Novel-prototype format.
+These folders may also contain files generated during verification. E.g.:
+    <test_name>_h_rg.bpl.attributes
 
 Each test begins with:
 test: <test_name>
