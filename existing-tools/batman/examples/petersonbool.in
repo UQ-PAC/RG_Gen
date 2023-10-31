@@ -1,0 +1,28 @@
+var flag0:bool, flag1:bool, turn:int, x:int;
+
+initial flag0 == false and flag1 == false and turn == 0 and x == 0;
+
+thread a:
+begin
+/*while true do*/
+  flag0 = true;
+  turn = 1;
+  assume (flag1==false or turn == 0);
+@  x = 8;
+  x = x + 1; 
+  flag0 = false;
+/*done;*/
+end
+
+
+thread b:
+begin
+/*while true do*/
+  flag1 = true;
+  turn = 0;
+  assume (flag0==false or turn == 1);
+@    x = 4;
+  x = x + 1;
+  flag1 = false;
+/*done;*/
+end

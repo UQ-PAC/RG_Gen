@@ -1,0 +1,136 @@
+### Starting build.
+# Target: batman.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:batman.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules batman.ml > batman.ml.depends
+# Target: abs.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:abs.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules abs.ml > abs.ml.depends
+# Target: bdddomain.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:bdddomain.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules bdddomain.ml > bdddomain.ml.depends
+# Target: bdddomain.cmo, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:cmo, extension:ml, file:bdddomain.cmo, file:bdddomain.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o bdddomain.cmo bdddomain.ml
+# Target: analyzer.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:analyzer.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules analyzer.ml > analyzer.ml.depends
+# Target: abs.cmo, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:cmo, extension:ml, file:abs.cmo, file:abs.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o abs.cmo abs.ml
+# Target: bddapron_domain.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:bddapron_domain.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules bddapron_domain.ml > bddapron_domain.ml.depends
+# Target: bddapron_domain.cmo, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:cmo, extension:ml, file:bddapron_domain.cmo, file:bddapron_domain.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o bddapron_domain.cmo bddapron_domain.ml
+# Target: lexer.mll, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet }
+/home/unimelb.edu.au/jtobler/.opam/default/bin/ocamllex.opt -q lexer.mll
+# Target: lexer.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:lexer.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules lexer.ml > lexer.ml.depends
+# Target: parser.mly.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:mly, file:parser.mly, infer, menhir_ocamldep, ocaml, ocamldep, quiet }
+menhir --raw-depend --ocamldep 'ocamlfind ocamldep -modules' parser.mly > parser.mly.depends
++ menhir --raw-depend --ocamldep 'ocamlfind ocamldep -modules' parser.mly > parser.mly.depends
+File "parser.mly", line 52, characters 7-13:
+Warning: the token T_RAND is unused.
+# Target: abs_init.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:abs_init.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules abs_init.ml > abs_init.ml.depends
+# Target: abs_init.cmo, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:cmo, extension:ml, file:abs_init.cmo, file:abs_init.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o abs_init.cmo abs_init.ml
+# Target: parser.mly, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:ml, extension:mly, file:parser.ml, file:parser.mly, infer, menhir, ocaml, parser, quiet }
+menhir --ocamlc 'ocamlfind ocamlc -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron' --infer parser.mly
++ menhir --ocamlc 'ocamlfind ocamlc -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron' --infer parser.mly
+File "parser.mly", line 52, characters 7-13:
+Warning: the token T_RAND is unused.
+File "parser.mly", line 78, characters 0-9:
+Warning: the precedence level assigned to T_BEGIN is never useful.
+File "parser.mly", line 74, characters 0-9:
+Warning: the precedence level assigned to T_DO is never useful.
+File "parser.mly", line 75, characters 0-9:
+Warning: the precedence level assigned to T_DONE is never useful.
+File "parser.mly", line 77, characters 0-9:
+Warning: the precedence level assigned to T_ELSE is never useful.
+File "parser.mly", line 78, characters 0-9:
+Warning: the precedence level assigned to T_END is never useful.
+File "parser.mly", line 83, characters 0-5:
+Warning: the precedence level assigned to T_EQUAL is never useful.
+File "parser.mly", line 76, characters 0-9:
+Warning: the precedence level assigned to T_IF is never useful.
+File "parser.mly", line 78, characters 0-9:
+Warning: the precedence level assigned to T_LPAR is never useful.
+File "parser.mly", line 78, characters 0-9:
+Warning: the precedence level assigned to T_RPAR is never useful.
+File "parser.mly", line 76, characters 0-9:
+Warning: the precedence level assigned to T_THEN is never useful.
+File "parser.mly", line 73, characters 0-9:
+Warning: the precedence level assigned to T_WHILE is never useful.
+# Target: parser.mli.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:mli, file:parser.mli, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules parser.mli > parser.mli.depends
+# Target: parser.cmi, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:mli, file:parser.mli, interf, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o parser.cmi parser.mli
+# Target: type_prog.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:type_prog.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules type_prog.ml > type_prog.ml.depends
+# Target: analyzer.cmo, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:cmo, extension:ml, file:analyzer.cmo, file:analyzer.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o analyzer.cmo analyzer.ml
++ ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o analyzer.cmo analyzer.ml
+File "analyzer.ml", line 212, characters 14-22:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+None
+File "analyzer.ml", line 601, characters 24-26:
+Warning 3: deprecated: Pervasives.or
+Use (||) instead.
+File "analyzer.ml", line 324, characters 14-18:
+Warning 26: unused variable th_d.
+File "analyzer.ml", line 515, characters 12-16:
+Warning 26: unused variable vars.
+# Target: lexer.cmo, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:cmo, extension:ml, file:lexer.cmo, file:lexer.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o lexer.cmo lexer.ml
+# Target: type_prog.cmo, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:cmo, extension:ml, file:type_prog.cmo, file:type_prog.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o type_prog.cmo type_prog.ml
+# Target: batman.cmo, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), byte, compile, extension:cmo, extension:ml, file:batman.cmo, file:batman.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o batman.cmo batman.ml
++ ocamlfind ocamlc -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o batman.cmo batman.ml
+File "batman.ml", line 82, characters 12-33:
+Warning 52: Code should not depend on the actual values of
+this constructor's arguments. They are only for information
+and may change in future versions. (See manual section 8.5)
+File "_none_", line 1:
+Warning 52: Code should not depend on the actual values of
+this constructor's arguments. They are only for information
+and may change in future versions. (See manual section 8.5)
+# Target: bdddomain.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:bdddomain.cmx, file:bdddomain.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o bdddomain.cmx bdddomain.ml
+# Target: abs.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:abs.cmx, file:abs.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o abs.cmx abs.ml
+# Target: bddapron_domain.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:bddapron_domain.cmx, file:bddapron_domain.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o bddapron_domain.cmx bddapron_domain.ml
+# Target: parser.ml.depends, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -modules parser.ml > parser.ml.depends
+# Target: abs_init.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:abs_init.cmx, file:abs_init.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o abs_init.cmx abs_init.ml
+# Target: parser.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:parser.cmx, file:parser.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o parser.cmx parser.ml
+# Target: analyzer.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:analyzer.cmx, file:analyzer.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o analyzer.cmx analyzer.ml
++ ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o analyzer.cmx analyzer.ml
+File "analyzer.ml", line 212, characters 14-22:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+None
+File "analyzer.ml", line 601, characters 24-26:
+Warning 3: deprecated: Pervasives.or
+Use (||) instead.
+File "analyzer.ml", line 324, characters 14-18:
+Warning 26: unused variable th_d.
+File "analyzer.ml", line 515, characters 12-16:
+Warning 26: unused variable vars.
+# Target: lexer.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:lexer.cmx, file:lexer.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o lexer.cmx lexer.ml
+# Target: type_prog.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:type_prog.cmx, file:type_prog.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o type_prog.cmx type_prog.ml
+# Target: batman.cmx, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), compile, extension:cmx, extension:ml, file:batman.cmx, file:batman.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o batman.cmx batman.ml
++ ocamlfind ocamlopt -c -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron -o batman.cmx batman.ml
+File "batman.ml", line 82, characters 12-33:
+Warning 52: Code should not depend on the actual values of
+this constructor's arguments. They are only for information
+and may change in future versions. (See manual section 8.5)
+File "_none_", line 1:
+Warning 52: Code should not depend on the actual values of
+this constructor's arguments. They are only for information
+and may change in future versions. (See manual section 8.5)
+# Target: batman.native, tags: { package(apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron), dont_link_with, extension:native, file:batman.native, link, native, ocaml, program, quiet }
+ocamlfind ocamlopt -linkpkg -package apron,apron.apron,apron.boxD,apron.boxMPFR,apron.boxMPQ,apron.octD,apron.octMPQ,apron.polkaGrid,apron.polkaMPQ,apron.polkaRll,apron.ppl,apron.t1pD,apron.t1pMPFR,apron.t1pMPQ,gmp,bddapron,bddapron.bdd,bddapron.bddapron bdddomain.cmx abs.cmx abs_init.cmx bddapron_domain.cmx analyzer.cmx parser.cmx lexer.cmx type_prog.cmx batman.cmx -o batman.native
+# Compilation successful.
