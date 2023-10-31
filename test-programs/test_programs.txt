@@ -81,15 +81,13 @@ The following tools are yet to have test files produced for them:
 - novel-prototype
 - threader
 - horn-ice
-- batman
+- batman (unsure how to write specifications)
 - concurinterproc
 - astreea
 
 The following tools are yet to be added to the existing-tools directory:
-- horn-ice
-- batman
 - concurinterproc
-- astreea
+- astreea (commercial licence: https://www.absint.com/astree/contact.htm)
 
 ===============================================================================
 ===============================================================================
